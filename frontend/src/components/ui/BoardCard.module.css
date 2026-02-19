@@ -1,0 +1,137 @@
+/* BoardCard Component Styles */
+.boardCard {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  font-family: 'Crimson Pro', serif;
+}
+
+.boardCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(9, 71, 139, 0.15);
+  border-color: #09478B;
+}
+
+.boardCard.selected {
+  border-color: #09478B;
+  box-shadow: 0 8px 24px rgba(9, 71, 139, 0.2);
+}
+
+.cardImage {
+  height: 160px;
+  background: linear-gradient(135deg, #09478B 0%, #0d5bb5 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.cardImage::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+}
+
+.cardAcronym {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 48px;
+  font-weight: 700;
+  color: white;
+  font-family: 'Space Mono', monospace;
+  letter-spacing: 2px;
+}
+
+.cardContent {
+  padding: 24px;
+}
+
+.cardTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.cardSubtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.cardBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: #f8f9fa;
+  color: #09478B;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Space Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.boardCard:hover .cardBadge {
+  background: #09478B;
+  color: white;
+}
+
+/* Color variations */
+.blue-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.purple-gradient {
+  background: linear-gradient(135deg, #09478B 0%, #0d5bb5 100%);
+}
+
+.pink-gradient {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.cyan-gradient {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.green-gradient {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.orange-gradient {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.teal-gradient {
+  background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+}
+
+.rose-gradient {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
+
+.coral-gradient {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+}
+
+@media (max-width: 768px) {
+  .cardImage {
+    height: 140px;
+  }
+
+  .cardAcronym {
+    font-size: 40px;
+  }
+}

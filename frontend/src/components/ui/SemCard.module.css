@@ -1,0 +1,39 @@
+/* SemCard Component Styles */
+.semesterCard {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Crimson Pro', serif;
+}
+
+.semesterCard:last-child {
+  margin-bottom: 0;
+}
+
+.semesterCard:hover {
+  transform: translateX(5px);
+  border-color: #09478B;
+  box-shadow: 0 4px 12px rgba(9, 71, 139, 0.1);
+}
+
+.semesterCard.selected {
+  border-color: #09478B;
+  background: rgba(9, 71, 139, 0.05);
+  box-shadow: 0 4px 12px rgba(9, 71, 139, 0.15);
+}
+
+.semesterTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+
+.semesterSubtitle {
+  font-size: 13px;
+  color: #666;
+}

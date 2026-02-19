@@ -1,0 +1,32 @@
+# General
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.temp
+
+# Dependencies
+node_modules/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+
+# Distribution / Build
+build/
+dist/
+.next/
+out/
+
+# Environment files (NEVER commit these)
+.env
+.env.*
+!.env.example
+
+# Python virtual environments
+.venv/
+
+# OS
+*.swp
+*.swo

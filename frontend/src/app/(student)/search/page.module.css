@@ -1,0 +1,354 @@
+.container {
+  min-height: 100vh;
+  padding: 3rem 0;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .title {
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+}
+
+.quickSearchSection {
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: var(--card-bg);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.quickSearchInput {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--bg-color);
+  border: 2px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.quickSearchInput:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 6px 16px rgba(31, 95, 168, 0.12);
+}
+
+.quickSearchInput:focus-within {
+  border-color: var(--primary-color);
+  box-shadow: 0 8px 20px rgba(31, 95, 168, 0.15);
+}
+
+.quickSearchInput svg {
+  flex-shrink: 0;
+  color: var(--primary-color);
+}
+
+.globalSearchInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 1.125rem;
+  color: var(--text-primary);
+  outline: none;
+}
+
+.globalSearchInput::placeholder {
+  color: var(--text-secondary);
+}
+
+.quickSearchHint {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.categorySeparator {
+  text-align: center;
+  margin: 3rem 0 2rem;
+  position: relative;
+}
+
+.categorySeparator::before,
+.categorySeparator::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background: var(--border-color);
+}
+
+.categorySeparator::before {
+  left: 0;
+}
+
+.categorySeparator::after {
+  right: 0;
+}
+
+.categorySeparator span {
+  background: var(--bg-color);
+  padding: 0 1rem;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.searchResultsSection {
+  margin-bottom: 3rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.resultsTitle {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.resultsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.resultCard {
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.resultCard:hover {
+  transform: translateY(-4px);
+}
+
+.resultCover {
+  height: 160px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.resultInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.resultType {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: var(--primary-color);
+  color: white;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  width: fit-content;
+  margin-bottom: 0.75rem;
+}
+
+.resultTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.resultAuthor {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.resultMeta {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.resultBadge {
+  padding: 0.25rem 0.75rem;
+  background: var(--card-hover);
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.resultFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.resultRating {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.noResults {
+  text-align: center;
+  padding: 4rem 2rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.noResults svg {
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.noResults h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.noResults p {
+  color: var(--text-secondary);
+}
+
+.searchTypeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.searchTypeCard {
+  padding: 2.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  text-align: center;
+}
+
+.searchTypeCard:hover {
+  transform: translateY(-8px);
+  border-color: var(--primary-color);
+  box-shadow: 0 12px 32px rgba(31, 95, 168, 0.2);
+}
+
+.searchTypeIcon {
+  width: 120px;
+  height: 120px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.searchTypeContent h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+.searchTypeContent p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.searchTypeFeatures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.featureTag {
+  padding: 0.5rem 1rem;
+  background: var(--card-hover);
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .searchTypeGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .searchTypeCard {
+    padding: 2rem;
+  }
+
+  .searchTypeIcon {
+    width: 100px;
+    height: 100px;
+  }
+
+  .searchTypeIcon svg {
+    width: 48px;
+    height: 48px;
+  }
+
+  .globalSearchInput {
+    font-size: 1rem;
+  }
+
+  .categorySeparator::before,
+  .categorySeparator::after {
+    width: 30%;
+  }
+
+  .resultsGrid {
+    grid-template-columns: 1fr;
+  }
+}

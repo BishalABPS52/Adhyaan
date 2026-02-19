@@ -1,0 +1,269 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.loading,
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.backButton {
+  background: var(--background-secondary);
+  border: 1px solid var(--border);
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  color: var(--foreground);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.backButton:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.courseHeader {
+  background: var(--card-background);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.courseTitle {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.courseTitle h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--foreground);
+  margin: 0;
+}
+
+.shortCode {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--primary);
+  padding: 0.5rem 1rem;
+  background: var(--primary-light, #e0e7ff);
+  border-radius: 8px;
+}
+
+.courseMeta {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.metaItem {
+  font-size: 0.95rem;
+  color: var(--foreground-muted);
+}
+
+.metaLabel {
+  font-weight: 600;
+  color: var(--foreground);
+  margin-right: 0.25rem;
+}
+
+.courseDescription {
+  font-size: 1.05rem;
+  color: var(--foreground);
+  line-height: 1.6;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.semesterFilter {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.semesterFilter label {
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.select {
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--background-secondary);
+  color: var(--foreground);
+  font-size: 1rem;
+  cursor: pointer;
+  min-width: 200px;
+  transition: border-color 0.2s;
+}
+
+.select:hover {
+  border-color: var(--primary);
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.booksSection h2 {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: var(--foreground);
+  margin-bottom: 1.5rem;
+}
+
+.empty {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.emptyIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.empty h3 {
+  font-size: 1.5rem;
+  color: var(--foreground);
+  margin-bottom: 0.5rem;
+}
+
+.empty p {
+  color: var(--foreground-muted);
+}
+
+.booksGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.bookCard {
+  background: var(--card-background);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.bookCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary);
+}
+
+.bookHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.bookTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.requiredBadge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  background: var(--error-background, #fee);
+  color: var(--error, #c00);
+  border-radius: 4px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.bookAuthor {
+  font-size: 0.95rem;
+  color: var(--foreground-muted);
+  margin: 0 0 1rem 0;
+  font-style: italic;
+}
+
+.bookMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.metaTag {
+  font-size: 0.85rem;
+  padding: 0.25rem 0.75rem;
+  background: var(--background-secondary);
+  color: var(--foreground-muted);
+  border-radius: 20px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .courseTitle h1 {
+    font-size: 1.5rem;
+  }
+
+  .courseMeta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .booksGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .semesterFilter {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .select {
+    width: 100%;
+  }
+}

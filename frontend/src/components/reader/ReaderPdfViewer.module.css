@@ -1,0 +1,122 @@
+.readerWrapper {
+  width: 100%;
+  height: 85vh;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+  position: relative;
+  border: 1px solid #e2e8f0;
+}
+
+/* Fix for fullscreen */
+.readerWrapper:fullscreen {
+  width: 100vw !important;
+  height: 100vh !important;
+  border-radius: 0 !important;
+  border: none !important;
+  z-index: 9999;
+}
+
+.readerToolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1.5rem;
+  background: white;
+  border-bottom: 1px solid #f1f5f9;
+  flex-shrink: 0;
+}
+
+.readerInfo h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+}
+
+.controlBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.controlBtn:hover {
+  background: #094A8B;
+  color: white;
+  border-color: #094A8B;
+}
+
+.controlBtn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.readerFrame {
+  flex: 1;
+  width: 100%;
+  position: relative;
+  background: #525659;
+}
+
+.readerWrapper:fullscreen .readerFrame {
+  height: calc(100vh - 60px); /* Adjust based on toolbar height */
+}
+
+.iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: white;
+  display: block;
+}
+
+.loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  z-index: 20;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #094A8B;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 640px) {
+  .readerToolbar {
+    padding: 10px;
+  }
+  .controlBtn span {
+    display: none;
+  }
+}

@@ -1,0 +1,98 @@
+/* CourseCard Component Styles */
+.courseCard {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  font-family: 'Crimson Pro', serif;
+}
+
+.courseCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(9, 71, 139, 0.15);
+  border-color: #09478B;
+}
+
+.courseCard.selected {
+  border-color: #09478B;
+  box-shadow: 0 8px 24px rgba(9, 71, 139, 0.2);
+}
+
+.cardHeader {
+  height: 120px;
+  background: linear-gradient(135deg, #09478B 0%, #0d5bb5 100%);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardHeader::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(255,255,255,0.05) 10px,
+    rgba(255,255,255,0.05) 20px
+  );
+}
+
+.courseAcronym {
+  font-size: 32px;
+  font-weight: 700;
+  color: white;
+  font-family: 'Space Mono', monospace;
+  position: relative;
+  z-index: 1;
+}
+
+.cardContent {
+  padding: 24px;
+}
+
+.cardTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.cardSubtitle {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Color variations */
+.primary-gradient {
+  background: linear-gradient(135deg, #09478B 0%, #0d5bb5 100%);
+}
+
+.purple-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.pink-gradient {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+@media (max-width: 768px) {
+  .cardHeader {
+    height: 100px;
+  }
+
+  .courseAcronym {
+    font-size: 28px;
+  }
+}

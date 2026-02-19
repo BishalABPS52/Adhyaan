@@ -1,0 +1,574 @@
+.pageRoot {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.topHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.headerSpacer {
+  flex: 1;
+}
+
+.badgeContainer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  gap: 0.75rem;
+  z-index: 10;
+}
+
+.viewBadge {
+  background: #094A8B;
+  color: white;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 6px -1px rgba(9, 74, 139, 0.2);
+}
+
+.readerBadge {
+  background: var(--card-bg);
+  color: var(--primary-color);
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.contentContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Academic View Styles */
+.academicView {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.academicMetadataGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.metadataCard {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.metadataCard label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metadataCard span {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.academicInfo {
+  background: var(--card-bg);
+  padding: 2.5rem;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.academicTitle {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.chapterTag {
+  display: inline-block;
+  background: rgba(3, 105, 161, 0.1);
+  color: #0ea5e9;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.descriptionText {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  font-size: 1.1rem;
+  position: relative;
+  padding-bottom: 2rem;
+}
+
+.descriptionBadges {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: transparent;
+  padding-left: 1rem;
+}
+
+.miniViewBadge {
+  background: #094A8B;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.descriptionReaderCount {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+}
+
+.academicAction {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.academicUploader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.markReadSection {
+  margin-top: 3rem;
+  padding: 2rem;
+  background: var(--bg-primary);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.markReadBtn {
+  background: #10B981;
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.markReadBtn:hover:not(:disabled) {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+.markReadBtn:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.completedBadge {
+  margin-top: 2rem;
+  padding: 1.25rem 2rem;
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  border: 1px solid #6ee7b7;
+  border-radius: 12px;
+  color: #065f46;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: center;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.reviewCountLabel {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.notRatedLabel {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  font-style: italic;
+  font-weight: 500;
+}
+
+
+/* Indie View Styles */
+.indieView {
+  padding: 2rem;
+  background: var(--card-bg);
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 3rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.indieHeader {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.indieTitle {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+.indieMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.indieAuthor {
+  font-size: 1.5rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.uploaderInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--bg-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.uploaderCell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.indieDescription {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  font-size: 1.15rem;
+  margin-bottom: 2.5rem;
+  position: relative;
+  padding-bottom: 2rem;
+}
+
+.actionCenter {
+  display: flex;
+  justify-content: center;
+}
+
+.readNowBtn {
+  background: #094A8B;
+  color: white;
+  padding: 1rem 3rem;
+  border-radius: 10px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.readNowBtn:hover {
+  background: #073a6e;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(9, 74, 139, 0.2);
+}
+
+.readerSection {
+  margin-top: 40px;
+  min-height: 85vh;
+  background: var(--card-bg);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+  scroll-margin-top: 100px;
+}
+
+/* Rating Section */
+.ratingSection {
+  margin-top: 60px;
+  background: var(--card-bg);
+  padding: 40px;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  text-align: center;
+  animation: fadeIn 0.5s ease-out;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.ratingDivider {
+  height: 1px;
+  background: var(--border-color);
+  margin-bottom: 40px;
+}
+
+.ratingHeader {
+  margin-bottom: 24px;
+}
+
+.avgContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.avgLabel {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.avgValue {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.avgStars {
+  display: flex;
+  gap: 2px;
+  font-size: 20px;
+}
+
+.ratingHeader h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.starPicker {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.starBtn {
+  background: transparent;
+  border: none;
+  font-size: 48px;
+  color: var(--border-color);
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+  line-height: 1;
+}
+
+.starBtn:hover, .starBtnActive {
+  color: #fbbf24;
+  transform: scale(1.1);
+}
+
+.ratingMessage {
+  min-height: 24px;
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 30px;
+  font-weight: 500;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+.confirmRatingBtn {
+  background: #094A8B;
+  color: #fff;
+  border: none;
+  padding: 14px 40px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.confirmRatingBtn:hover:not(:disabled) {
+  background: #073a6e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(9, 74, 139, 0.2);
+}
+
+.confirmRatingBtn:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+/* Status Containers */
+.loadingContainer, .errorContainer {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #094A8B;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1.5rem;
+}
+
+.errorIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.errorContainer h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.backButton {
+  margin-top: 1.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.backButton:hover {
+  background: var(--bg-primary);
+  border-color: var(--text-muted);
+}
+.thanksWrap {
+  padding: 20px;
+  margin-top: 10px;
+}
+.thanksMsg {
+  color: var(--success);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .indieTitle {
+    font-size: 2rem;
+  }
+  .academicTitle {
+    font-size: 1.75rem;
+  }
+  .indieMeta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .starBtn {
+    font-size: 32px;
+  }
+  .contentContainer {
+    padding: 1rem;
+  }
+  .academicMetadataGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 480px) {
+  .academicMetadataGrid {
+    grid-template-columns: 1fr;
+  }
+  .metadataCard {
+    padding: 1rem;
+  }
+  .academicInfo, .indieView {
+    padding: 1.5rem;
+  }
+}
