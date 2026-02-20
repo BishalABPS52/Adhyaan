@@ -11,7 +11,7 @@ export const ThemeProvider = ({ children }) => {
     const storedTheme = localStorage.getItem('adhyaan_theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    const theme = storedTheme || (prefersDark ? 'dark' : 'light');
+    const theme = storedTheme || 'light';
     setIsDark(theme === 'dark');
     document.documentElement.setAttribute('data-theme', theme);
   }, []);

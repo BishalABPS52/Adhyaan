@@ -179,7 +179,7 @@ export default function BookReaderPage() {
     return (
       <div className={styles.loadingContainer}>
         <div className={styles.loader}></div>
-        <p>Preparing your premium reading environment...</p>
+        <p>Preparing your reading environment...</p>
       </div>
     );
   }
@@ -277,12 +277,10 @@ export default function BookReaderPage() {
         <div className={styles.metadataCard}>
           <label>ACADEMIC YEAR</label>
           <span>
-            Year {book.year || "N/A"} •{" "}
-            {book.semester
-              ? `Semester ${book.semester}`
-              : book.part
-                ? `Part ${book.part}`
-                : "Full Term"}
+            Year {book.year || "N/A"}
+            {book.part ? ` • Part ${book.part}` : ""}
+            {book.semester ? ` • Sem ${book.semester}` : ""}
+            {!book.part && !book.semester ? " • Full Term" : ""}
           </span>
         </div>
         <div className={styles.metadataCard}>
@@ -372,8 +370,8 @@ export default function BookReaderPage() {
               />
               <span className={styles.checkmark}></span>
               {isAcademic
-                ? "I have finished studying this configuration"
-                : "I have completed reading this book"}
+                ? "I have finished studying this"
+                : "I have completed reading this"}
             </label>
             <button
               className={styles.markReadBtn}
@@ -386,9 +384,7 @@ export default function BookReaderPage() {
         )}
 
         {showReader && isMarkedRead && (
-          <div className={styles.completedBadge}>
-            You have completed this {isAcademic ? "configuration" : "book"}!
-          </div>
+          <div className={styles.completedBadge}>You have completed this!</div>
         )}
 
         {/* Ratings Section */}
@@ -423,7 +419,7 @@ export default function BookReaderPage() {
                   <span className={styles.notRatedLabel}>Not yet rated</span>
                 )}
               </div>
-              <h3>Rate this Configuration</h3>
+              <h3>Rate this</h3>
             </div>
 
             {hasRated ? (

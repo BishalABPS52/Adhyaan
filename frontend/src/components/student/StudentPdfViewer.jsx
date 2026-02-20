@@ -13,6 +13,16 @@ export default function StudentPdfViewer({ pdfUrl, bookTitle }) {
   useEffect(() => {
     if (!pdfUrl) return;
 
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+    if (isMobile) {
+      // Use Google Docs Viewer for mobile devices to avoid blob URL issues in iframes
+      const googleDocsUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(pdfUrl)}&embedded=true`;
+      setDisplayUrl(googleDocsUrl);
+      setLoading(false);
+      return;
+    }
+
     const prepareDocument = async () => {
       setLoading(true);
       if (objectUrlRef.current) {

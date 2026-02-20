@@ -179,6 +179,13 @@ const ReaderNavbar = () => {
             Community
           </Link>
           <Link
+            href="/profile"
+            className={styles.mobileLink}
+            onClick={toggleMobileMenu}
+          >
+            Profile
+          </Link>
+          <Link
             href="/help"
             className={styles.mobileLink}
             onClick={toggleMobileMenu}
