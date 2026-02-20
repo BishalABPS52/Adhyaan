@@ -1,6 +1,7 @@
 // API Service - Backend Communication Layer
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "https://adhyaan.up.railway.app/api/v1";
 
 export const getApiBaseUrl = () => API_BASE_URL;
 
@@ -59,7 +60,7 @@ class ApiService {
       
       // Handle network errors
       if (error.message === 'Failed to fetch') {
-        throw new Error('Cannot connect to backend. Please ensure the backend server is running on http://localhost:8000');
+        throw new Error('Server Connection Failure');
       }
       
       throw error;

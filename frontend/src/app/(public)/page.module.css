@@ -84,8 +84,8 @@
 
 .ctaCards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.2rem;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -96,8 +96,10 @@
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   margin: 0 auto;
+  gap: 2rem;
   height: 572px;
   display: flex;
   flex-direction: column;

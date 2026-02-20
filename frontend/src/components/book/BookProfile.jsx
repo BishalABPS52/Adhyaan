@@ -30,7 +30,8 @@ const BookProfile = ({ book }) => {
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
       const apiUrl =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+        process.env.NEXT_PUBLIC_API_URL ||
+        "https://adhyaan.up.railway.app/api/v1";
       const response = await fetch(`${apiUrl}/books/${book.id}/ratings`, {
         headers,
       });
@@ -90,8 +91,8 @@ const BookProfile = ({ book }) => {
         return;
       }
 
-      const apiUrl =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+      // const apiUrl = "https://adhyaan.up.railway.app/api/v1";
+      const apiUrl = "http://localhost:8000/api/v1";
       const response = await fetch(`${apiUrl}/books/${book.id}/ratings`, {
         method: "POST",
         headers: {

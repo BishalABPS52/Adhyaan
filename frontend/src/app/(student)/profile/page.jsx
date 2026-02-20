@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useAuth } from '@/hooks/useAuth';
-import Card from '@/components/ui/Card';
-import Button from '@/components/ui/Button';
-import styles from './page.module.css';
+import { useState, useEffect } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import Card from "@/components/ui/Card";
+import Button from "@/components/ui/Button";
+import styles from "./page.module.css";
 
 export default function ProfilePage() {
   const { user, logout } = useAuth();
@@ -17,22 +17,25 @@ export default function ProfilePage() {
 
   const fetchProfile = async () => {
     if (!user) return;
-    
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
-    const token = localStorage.getItem('adhyaan_token') || localStorage.getItem('token');
-    
+
+    const baseUrl =
+      process.env.NEXT_PUBLIC_API_URL ||
+      "https://adhyaan.up.railway.app/api/v1";
+    const token =
+      localStorage.getItem("adhyaan_token") || localStorage.getItem("token");
+
     try {
       const response = await fetch(`${baseUrl}/users/profile`, {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (response.ok) {
         const data = await response.json();
         setProfile(data);
       }
     } catch (error) {
-      console.error('Error fetching profile:', error);
+      console.error("Error fetching profile:", error);
     } finally {
       setLoading(false);
     }
@@ -53,14 +56,19 @@ export default function ProfilePage() {
             <div className={styles.avatarSection}>
               <div className={styles.avatar}>
                 {profile?.profile_image_url ? (
-                  <img src={profile.profile_image_url} alt={profile.full_name} />
+                  <img
+                    src={profile.profile_image_url}
+                    alt={profile.full_name}
+                  />
                 ) : (
                   <div className={styles.avatarPlaceholder}>
-                    {profile?.full_name?.charAt(0) || profile?.username?.charAt(0) || 'U'}
+                    {profile?.full_name?.charAt(0) ||
+                      profile?.username?.charAt(0) ||
+                      "U"}
                   </div>
                 )}
               </div>
-              <h2>{profile?.full_name || 'Bhairav Aryal'}</h2>
+              <h2>{profile?.full_name || "Bhairav Aryal"}</h2>
               <p className={styles.roleBadge}>{profile?.role?.toUpperCase()}</p>
             </div>
 
@@ -75,7 +83,11 @@ export default function ProfilePage() {
               </div>
               <div className={styles.infoGroup}>
                 <label>Member Since</label>
-                <p>{profile?.created_at ? new Date(profile.created_at).toLocaleDateString() : 'Feb 2026'}</p>
+                <p>
+                  {profile?.created_at
+                    ? new Date(profile.created_at).toLocaleDateString()
+                    : "Feb 2026"}
+                </p>
               </div>
               {profile?.bio && (
                 <div className={styles.infoGroup}>
@@ -86,8 +98,12 @@ export default function ProfilePage() {
             </div>
 
             <div className={styles.actions}>
-              <Button variant="secondary" onClick={() => {}}>Edit Profile</Button>
-              <Button variant="danger" onClick={logout}>Logout</Button>
+              <Button variant="secondary" onClick={() => {}}>
+                Edit Profile
+              </Button>
+              <Button variant="danger" onClick={logout}>
+                Logout
+              </Button>
             </div>
           </Card>
 
@@ -102,7 +118,7 @@ export default function ProfilePage() {
                 <span>Verified</span>
                 <span className={styles.statusCheck}>✓</span>
               </div>
-              {profile?.role === 'author' && (
+              {profile?.role === "author" && (
                 <div className={styles.statusItem}>
                   <span>Author Approved</span>
                   <span className={styles.statusCheck}>✓</span>
@@ -113,7 +129,13 @@ export default function ProfilePage() {
             <Card className={styles.statsCard}>
               <h3>Security</h3>
               <p>Password last changed: 2 months ago</p>
-              <Button variant="outline" size="small" style={{ marginTop: '1rem' }}>Change Password</Button>
+              <Button
+                variant="outline"
+                size="small"
+                style={{ marginTop: "1rem" }}
+              >
+                Change Password
+              </Button>
             </Card>
           </div>
         </div>

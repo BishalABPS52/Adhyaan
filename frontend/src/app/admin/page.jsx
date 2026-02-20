@@ -22,7 +22,8 @@ export default function AdminLogin() {
 
     try {
       const apiUrl =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+        process.env.NEXT_PUBLIC_API_URL ||
+        "https://adhyaan.up.railway.app/api/v1";
       const response = await fetch(`${apiUrl}/admin/login`, {
         method: "POST",
         headers: {

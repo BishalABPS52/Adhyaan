@@ -22,9 +22,10 @@ export default function BookPage() {
       const token = localStorage.getItem("token");
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
       const apiUrl =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+        process.env.NEXT_PUBLIC_API_URL ||
+        "https://adhyaan.up.railway.app/api/v1";
       const backendUrl =
-        process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+        process.env.NEXT_PUBLIC_BACKEND_URL || "https://adhyaan.up.railway.app";
 
       const response = await fetch(`${apiUrl}/books/${bookId}`, {
         headers,

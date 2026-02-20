@@ -1,209 +1,437 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Card from '@/components/ui/Card';
-import Button from '@/components/ui/Button';
-import BoardCard from '@/components/ui/BoardCard';
-import CourseCard from '@/components/ui/CourseCard';
-import SemCard from '@/components/ui/SemCard';
-import StepCounter from '@/components/ui/StepCounter';
-import BookCard from '@/components/book/BookCard';
-import { formatGenre } from '@/utils/formatGenre';
-import styles from './page.module.css';
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Card from "@/components/ui/Card";
+import Button from "@/components/ui/Button";
+import BoardCard from "@/components/ui/BoardCard";
+import CourseCard from "@/components/ui/CourseCard";
+import SemCard from "@/components/ui/SemCard";
+import StepCounter from "@/components/ui/StepCounter";
+import BookCard from "@/components/book/BookCard";
+import { formatGenre } from "@/utils/formatGenre";
+import styles from "./page.module.css";
 
 export default function StudentSection() {
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [currentStep, setCurrentStep] = useState(0); // 0: board, 1: course, 2: year/semester, 3: subject, 4: books
-  const [selectedBoard, setSelectedBoard] = useState('');
-  const [selectedCourse, setSelectedCourse] = useState('');
-  const [selectedYear, setSelectedYear] = useState('');
-  const [selectedSemester, setSelectedSemester] = useState('');
-  const [selectedSubject, setSelectedSubject] = useState('');
+  const [selectedBoard, setSelectedBoard] = useState("");
+  const [selectedCourse, setSelectedCourse] = useState("");
+  const [selectedYear, setSelectedYear] = useState("");
+  const [selectedSemester, setSelectedSemester] = useState("");
+  const [selectedSubject, setSelectedSubject] = useState("");
   const [studyBooks, setStudyBooks] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Comprehensive board and course data
   const boardData = {
-    'NEB': {
-      name: 'National Examination Board',
-      short: 'NEB',
-      type: 'school',
+    NEB: {
+      name: "National Examination Board",
+      short: "NEB",
+      type: "school",
       courses: [
-        { name: '+2 Science', short: 'Science', code: 'SCI' },
-        { name: '+2 Management', short: 'Management', code: 'MGT' },
-        { name: '+2 Humanities', short: 'Humanities', code: 'HUM' },
-        { name: '+2 Education', short: 'Education', code: 'EDU' },
-        { name: '+2 Law', short: 'Law', code: 'LAW' }
+        { name: "+2 Science", short: "Science", code: "SCI" },
+        { name: "+2 Management", short: "Management", code: "MGT" },
+        { name: "+2 Humanities", short: "Humanities", code: "HUM" },
+        { name: "+2 Education", short: "Education", code: "EDU" },
+        { name: "+2 Law", short: "Law", code: "LAW" },
       ],
-      years: ['Grade 11', 'Grade 12']
+      years: ["Grade 11", "Grade 12"],
     },
-    'TU': {
-      name: 'Tribhuvan University (General Faculties)',
-      short: 'TU',
-      type: 'university',
+    TU: {
+      name: "Tribhuvan University (General Faculties)",
+      short: "TU",
+      type: "university",
       courses: [
-        { name: 'Bachelor of Arts', short: 'BA', code: 'BA' },
-        { name: 'Bachelor of Business Studies', short: 'BBS', code: 'BBS' },
-        { name: 'Bachelor of Business Administration', short: 'BBA', code: 'BBA' },
-        { name: 'Bachelor of Information Management', short: 'BIM', code: 'BIM' },
-        { name: 'Bachelor of Computer Application', short: 'BCA', code: 'BCA' },
-        { name: 'Bachelor of Science', short: 'BSc', code: 'BSc' },
-        { name: 'Bachelor of Science in Computer Science and Information Technology', short: 'BSc CSIT', code: 'CSIT' },
-        { name: 'Bachelor of Education', short: 'BEd', code: 'BEd' },
-        { name: 'Bachelor of Laws', short: 'LLB', code: 'LLB' },
-        { name: 'Bachelor of Pharmacy', short: 'BPharm', code: 'BPharm' },
-        { name: 'Bachelor of Hotel Management', short: 'BHM', code: 'BHM' }
-      ],
-      years: [1, 2, 3, 4],
-      parts: ['I', 'II'],
-      semesters: [1, 2, 3, 4, 5, 6, 7, 8]
-    },
-    'TU_IOE': {
-      name: 'Tribhuvan University - Institute of Engineering',
-      short: 'IOE',
-      type: 'engineering',
-      courses: [
-        { name: 'Bachelor of Civil Engineering', short: 'BCE', code: 'BCE' },
-        { name: 'Bachelor of Computer Engineering', short: 'BCT', code: 'BCT' },
-        { name: 'Bachelor of Electrical Engineering', short: 'BEL', code: 'BEL' },
-        { name: 'Bachelor of Electronics and Communication Engineering', short: 'BEI', code: 'BEI' },
-        { name: 'Bachelor of Mechanical Engineering', short: 'BME', code: 'BME' },
-        { name: 'Bachelor of Automobile Engineering', short: 'BAM', code: 'BAM' },
-        { name: 'Bachelor of Industrial Engineering', short: 'BIE', code: 'BIE' },
-        { name: 'Bachelor of Geomatics Engineering', short: 'BGE', code: 'BGE' },
-        { name: 'Bachelor of Agricultural Engineering', short: 'BAG', code: 'BAG' },
-        { name: 'Bachelor of Architecture', short: 'BAR', code: 'BAR' },
-        { name: 'Bachelor of Aerospace Engineering', short: 'BAE', code: 'BAE' },
-        { name: 'Bachelor of Chemical Engineering', short: 'BCH', code: 'BCH' }
+        { name: "Bachelor of Arts", short: "BA", code: "BA" },
+        { name: "Bachelor of Business Studies", short: "BBS", code: "BBS" },
+        {
+          name: "Bachelor of Business Administration",
+          short: "BBA",
+          code: "BBA",
+        },
+        {
+          name: "Bachelor of Information Management",
+          short: "BIM",
+          code: "BIM",
+        },
+        { name: "Bachelor of Computer Application", short: "BCA", code: "BCA" },
+        { name: "Bachelor of Science", short: "BSc", code: "BSc" },
+        {
+          name: "Bachelor of Science in Computer Science and Information Technology",
+          short: "BSc CSIT",
+          code: "CSIT",
+        },
+        { name: "Bachelor of Education", short: "BEd", code: "BEd" },
+        { name: "Bachelor of Laws", short: "LLB", code: "LLB" },
+        { name: "Bachelor of Pharmacy", short: "BPharm", code: "BPharm" },
+        { name: "Bachelor of Hotel Management", short: "BHM", code: "BHM" },
       ],
       years: [1, 2, 3, 4],
-      parts: ['I', 'II'],
-      semesters: [1, 2, 3, 4, 5, 6, 7, 8]
+      parts: ["I", "II"],
+      semesters: [1, 2, 3, 4, 5, 6, 7, 8],
     },
-    'TU_IOST': {
-      name: 'Tribhuvan University - Institute of Science and Technology',
-      short: 'IOST',
-      type: 'science',
+    TU_IOE: {
+      name: "Tribhuvan University - Institute of Engineering",
+      short: "IOE",
+      type: "engineering",
       courses: [
-        { name: 'Bachelor in Information Technology', short: 'BIT', code: 'BIT' },
-        { name: 'Bachelor of Science in Computer Science and Information Technology', short: 'BSc CSIT', code: 'CSIT' },
-        { name: 'Bachelor of Science in Microbiology', short: 'BSc Microbiology', code: 'MICRO' },
-        { name: 'Bachelor of Science in Environmental Science', short: 'BSc Environmental Science', code: 'ENV' },
-        { name: 'Bachelor of Science in Biotechnology', short: 'BSc Biotechnology', code: 'BIOTECH' }
+        { name: "Bachelor of Civil Engineering", short: "BCE", code: "BCE" },
+        { name: "Bachelor of Computer Engineering", short: "BCT", code: "BCT" },
+        {
+          name: "Bachelor of Electrical Engineering",
+          short: "BEL",
+          code: "BEL",
+        },
+        {
+          name: "Bachelor of Electronics and Communication Engineering",
+          short: "BEI",
+          code: "BEI",
+        },
+        {
+          name: "Bachelor of Mechanical Engineering",
+          short: "BME",
+          code: "BME",
+        },
+        {
+          name: "Bachelor of Automobile Engineering",
+          short: "BAM",
+          code: "BAM",
+        },
+        {
+          name: "Bachelor of Industrial Engineering",
+          short: "BIE",
+          code: "BIE",
+        },
+        {
+          name: "Bachelor of Geomatics Engineering",
+          short: "BGE",
+          code: "BGE",
+        },
+        {
+          name: "Bachelor of Agricultural Engineering",
+          short: "BAG",
+          code: "BAG",
+        },
+        { name: "Bachelor of Architecture", short: "BAR", code: "BAR" },
+        {
+          name: "Bachelor of Aerospace Engineering",
+          short: "BAE",
+          code: "BAE",
+        },
+        { name: "Bachelor of Chemical Engineering", short: "BCH", code: "BCH" },
       ],
       years: [1, 2, 3, 4],
-      parts: ['I', 'II'],
-      semesters: [1, 2, 3, 4, 5, 6, 7, 8]
+      parts: ["I", "II"],
+      semesters: [1, 2, 3, 4, 5, 6, 7, 8],
     },
-    'TU_IOM': {
-      name: 'Tribhuvan University - Institute of Medicine',
-      short: 'IOM',
-      type: 'medicine',
+    TU_IOST: {
+      name: "Tribhuvan University - Institute of Science and Technology",
+      short: "IOST",
+      type: "science",
       courses: [
-        { name: 'Bachelor of Medicine, Bachelor of Surgery', short: 'MBBS', code: 'MBBS' },
-        { name: 'Bachelor of Dental Surgery', short: 'BDS', code: 'BDS' },
-        { name: 'Bachelor of Science in Nursing', short: 'BSc Nursing', code: 'BSCN' },
-        { name: 'Bachelor of Nursing Science', short: 'BNS', code: 'BNS' },
-        { name: 'Bachelor of Audiology and Speech Language Pathology', short: 'BASLP', code: 'BASLP' },
-        { name: 'Bachelor of Optometry', short: 'BOptom', code: 'BOPTOM' },
-        { name: 'Bachelor of Science in Medical Laboratory Technology', short: 'BSc MLT', code: 'MLT' },
-        { name: 'Bachelor of Science in Medical Imaging Technology', short: 'BSc MIT', code: 'MIT' },
-        { name: 'Bachelor of Public Health', short: 'BPH', code: 'BPH' },
-        { name: 'Bachelor of Pharmacy', short: 'BPharm', code: 'BPHARM' }
+        {
+          name: "Bachelor in Information Technology",
+          short: "BIT",
+          code: "BIT",
+        },
+        {
+          name: "Bachelor of Science in Computer Science and Information Technology",
+          short: "BSc CSIT",
+          code: "CSIT",
+        },
+        {
+          name: "Bachelor of Science in Microbiology",
+          short: "BSc Microbiology",
+          code: "MICRO",
+        },
+        {
+          name: "Bachelor of Science in Environmental Science",
+          short: "BSc Environmental Science",
+          code: "ENV",
+        },
+        {
+          name: "Bachelor of Science in Biotechnology",
+          short: "BSc Biotechnology",
+          code: "BIOTECH",
+        },
+      ],
+      years: [1, 2, 3, 4],
+      parts: ["I", "II"],
+      semesters: [1, 2, 3, 4, 5, 6, 7, 8],
+    },
+    TU_IOM: {
+      name: "Tribhuvan University - Institute of Medicine",
+      short: "IOM",
+      type: "medicine",
+      courses: [
+        {
+          name: "Bachelor of Medicine, Bachelor of Surgery",
+          short: "MBBS",
+          code: "MBBS",
+        },
+        { name: "Bachelor of Dental Surgery", short: "BDS", code: "BDS" },
+        {
+          name: "Bachelor of Science in Nursing",
+          short: "BSc Nursing",
+          code: "BSCN",
+        },
+        { name: "Bachelor of Nursing Science", short: "BNS", code: "BNS" },
+        {
+          name: "Bachelor of Audiology and Speech Language Pathology",
+          short: "BASLP",
+          code: "BASLP",
+        },
+        { name: "Bachelor of Optometry", short: "BOptom", code: "BOPTOM" },
+        {
+          name: "Bachelor of Science in Medical Laboratory Technology",
+          short: "BSc MLT",
+          code: "MLT",
+        },
+        {
+          name: "Bachelor of Science in Medical Imaging Technology",
+          short: "BSc MIT",
+          code: "MIT",
+        },
+        { name: "Bachelor of Public Health", short: "BPH", code: "BPH" },
+        { name: "Bachelor of Pharmacy", short: "BPharm", code: "BPHARM" },
       ],
       years: [1, 2, 3, 4, 5],
-      parts: ['I', 'II'],
-      semesters: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      parts: ["I", "II"],
+      semesters: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     },
-    'KU': {
-      name: 'Kathmandu University',
-      short: 'KU',
-      type: 'university',
+    KU: {
+      name: "Kathmandu University",
+      short: "KU",
+      type: "university",
       courses: [
-        { name: 'Bachelor of Engineering in Civil Engineering', short: 'BE Civil', code: 'BECIVIL' },
-        { name: 'Bachelor of Engineering in Computer Engineering', short: 'BE Computer', code: 'BECOMP' },
-        { name: 'Bachelor of Engineering in Electrical and Electronics Engineering', short: 'BE Electrical', code: 'BEEE' },
-        { name: 'Bachelor of Engineering in Mechanical Engineering', short: 'BE Mechanical', code: 'BEMECH' },
-        { name: 'Bachelor of Engineering in Chemical Engineering', short: 'BE Chemical', code: 'BECHEM' },
-        { name: 'Bachelor of Architecture', short: 'BArch', code: 'BARCH' },
-        { name: 'Bachelor in Information Technology', short: 'BIT', code: 'BIT' },
-        { name: 'Bachelor of Science in Computer Science', short: 'BSc Computer Science', code: 'BSCS' },
-        { name: 'Bachelor of Business Administration', short: 'BBA', code: 'BBA' },
-        { name: 'Bachelor of Business Information Systems', short: 'BBIS', code: 'BBIS' },
-        { name: 'Bachelor of Dental Surgery', short: 'BDS', code: 'BDS' },
-        { name: 'Bachelor of Science in Nursing', short: 'BSc Nursing', code: 'BSCN' },
-        { name: 'Bachelor of Pharmacy', short: 'BPharm', code: 'BPHARM' }
+        {
+          name: "Bachelor of Engineering in Civil Engineering",
+          short: "BE Civil",
+          code: "BECIVIL",
+        },
+        {
+          name: "Bachelor of Engineering in Computer Engineering",
+          short: "BE Computer",
+          code: "BECOMP",
+        },
+        {
+          name: "Bachelor of Engineering in Electrical and Electronics Engineering",
+          short: "BE Electrical",
+          code: "BEEE",
+        },
+        {
+          name: "Bachelor of Engineering in Mechanical Engineering",
+          short: "BE Mechanical",
+          code: "BEMECH",
+        },
+        {
+          name: "Bachelor of Engineering in Chemical Engineering",
+          short: "BE Chemical",
+          code: "BECHEM",
+        },
+        { name: "Bachelor of Architecture", short: "BArch", code: "BARCH" },
+        {
+          name: "Bachelor in Information Technology",
+          short: "BIT",
+          code: "BIT",
+        },
+        {
+          name: "Bachelor of Science in Computer Science",
+          short: "BSc Computer Science",
+          code: "BSCS",
+        },
+        {
+          name: "Bachelor of Business Administration",
+          short: "BBA",
+          code: "BBA",
+        },
+        {
+          name: "Bachelor of Business Information Systems",
+          short: "BBIS",
+          code: "BBIS",
+        },
+        { name: "Bachelor of Dental Surgery", short: "BDS", code: "BDS" },
+        {
+          name: "Bachelor of Science in Nursing",
+          short: "BSc Nursing",
+          code: "BSCN",
+        },
+        { name: "Bachelor of Pharmacy", short: "BPharm", code: "BPHARM" },
       ],
       years: [1, 2, 3, 4],
-      parts: ['I', 'II'],
-      semesters: [1, 2, 3, 4, 5, 6, 7, 8]
+      parts: ["I", "II"],
+      semesters: [1, 2, 3, 4, 5, 6, 7, 8],
     },
-    'PU_POKHARA': {
-      name: 'Pokhara University',
-      short: 'PoU',
-      type: 'university',
+    PU_POKHARA: {
+      name: "Pokhara University",
+      short: "PoU",
+      type: "university",
       courses: [
-        { name: 'Bachelor of Civil Engineering', short: 'BE Civil', code: 'BECIVIL' },
-        { name: 'Bachelor of Computer Engineering', short: 'BE Computer', code: 'BECOMP' },
-        { name: 'Bachelor of Software Engineering', short: 'BE Software', code: 'BESOFT' },
-        { name: 'Bachelor of Electrical and Electronics Engineering', short: 'BE EEE', code: 'BEEE' },
-        { name: 'Bachelor of Electronics and Communication Engineering', short: 'BE EI', code: 'BEEI' },
-        { name: 'Bachelor of Computer Application', short: 'BCA', code: 'BCA' },
-        { name: 'Bachelor of Business Administration', short: 'BBA', code: 'BBA' },
-        { name: 'Bachelor of Hotel Management', short: 'BHM', code: 'BHM' },
-        { name: 'Bachelor of Pharmacy', short: 'BPharm', code: 'BPHARM' },
-        { name: 'Bachelor of Science in Nursing', short: 'BSc Nursing', code: 'BSCN' },
-        { name: 'Bachelor of Health Care Management', short: 'BHCM', code: 'BHCM' },
-        { name: 'Bachelor of Science in Biochemistry', short: 'BSc Biochemistry', code: 'BSCBIO' }
+        {
+          name: "Bachelor of Civil Engineering",
+          short: "BE Civil",
+          code: "BECIVIL",
+        },
+        {
+          name: "Bachelor of Computer Engineering",
+          short: "BE Computer",
+          code: "BECOMP",
+        },
+        {
+          name: "Bachelor of Software Engineering",
+          short: "BE Software",
+          code: "BESOFT",
+        },
+        {
+          name: "Bachelor of Electrical and Electronics Engineering",
+          short: "BE EEE",
+          code: "BEEE",
+        },
+        {
+          name: "Bachelor of Electronics and Communication Engineering",
+          short: "BE EI",
+          code: "BEEI",
+        },
+        { name: "Bachelor of Computer Application", short: "BCA", code: "BCA" },
+        {
+          name: "Bachelor of Business Administration",
+          short: "BBA",
+          code: "BBA",
+        },
+        { name: "Bachelor of Hotel Management", short: "BHM", code: "BHM" },
+        { name: "Bachelor of Pharmacy", short: "BPharm", code: "BPHARM" },
+        {
+          name: "Bachelor of Science in Nursing",
+          short: "BSc Nursing",
+          code: "BSCN",
+        },
+        {
+          name: "Bachelor of Health Care Management",
+          short: "BHCM",
+          code: "BHCM",
+        },
+        {
+          name: "Bachelor of Science in Biochemistry",
+          short: "BSc Biochemistry",
+          code: "BSCBIO",
+        },
       ],
       years: [1, 2, 3, 4],
-      parts: ['I', 'II'],
-      semesters: [1, 2, 3, 4, 5, 6, 7, 8]
+      parts: ["I", "II"],
+      semesters: [1, 2, 3, 4, 5, 6, 7, 8],
     },
-    'PU_PURBANCHAL': {
-      name: 'Purbanchal University',
-      short: 'PU',
-      type: 'university',
+    PU_PURBANCHAL: {
+      name: "Purbanchal University",
+      short: "PU",
+      type: "university",
       courses: [
-        { name: 'Bachelor of Civil Engineering', short: 'BE Civil', code: 'BECIVIL' },
-        { name: 'Bachelor of Computer Engineering', short: 'BE Computer', code: 'BECOMP' },
-        { name: 'Bachelor of Electronics, Communication and Automation Engineering', short: 'BE ECA', code: 'BECAE' },
-        { name: 'Bachelor of Biomedical Engineering', short: 'BE Biomedical', code: 'BEBIOMED' },
-        { name: 'Bachelor of Computer Application', short: 'BCA', code: 'BCA' },
-        { name: 'Bachelor of Business Administration', short: 'BBA', code: 'BBA' },
-        { name: 'Bachelor of Business Studies', short: 'BBS', code: 'BBS' },
-        { name: 'Bachelor of Arts', short: 'BA', code: 'BA' },
-        { name: 'Bachelor of Information Technology', short: 'BIT', code: 'BIT' },
-        { name: 'Bachelor of Science in Agriculture', short: 'BSc Agriculture', code: 'BSCAGRI' },
-        { name: 'Bachelor of Pharmacy', short: 'BPharm', code: 'BPHARM' },
-        { name: 'Bachelor of Science in Nursing', short: 'BSc Nursing', code: 'BSCN' },
-        { name: 'Bachelor of Veterinary Science and Animal Husbandry', short: 'BVSc & AH', code: 'BVSCAH' }
+        {
+          name: "Bachelor of Civil Engineering",
+          short: "BE Civil",
+          code: "BECIVIL",
+        },
+        {
+          name: "Bachelor of Computer Engineering",
+          short: "BE Computer",
+          code: "BECOMP",
+        },
+        {
+          name: "Bachelor of Electronics, Communication and Automation Engineering",
+          short: "BE ECA",
+          code: "BECAE",
+        },
+        {
+          name: "Bachelor of Biomedical Engineering",
+          short: "BE Biomedical",
+          code: "BEBIOMED",
+        },
+        { name: "Bachelor of Computer Application", short: "BCA", code: "BCA" },
+        {
+          name: "Bachelor of Business Administration",
+          short: "BBA",
+          code: "BBA",
+        },
+        { name: "Bachelor of Business Studies", short: "BBS", code: "BBS" },
+        { name: "Bachelor of Arts", short: "BA", code: "BA" },
+        {
+          name: "Bachelor of Information Technology",
+          short: "BIT",
+          code: "BIT",
+        },
+        {
+          name: "Bachelor of Science in Agriculture",
+          short: "BSc Agriculture",
+          code: "BSCAGRI",
+        },
+        { name: "Bachelor of Pharmacy", short: "BPharm", code: "BPHARM" },
+        {
+          name: "Bachelor of Science in Nursing",
+          short: "BSc Nursing",
+          code: "BSCN",
+        },
+        {
+          name: "Bachelor of Veterinary Science and Animal Husbandry",
+          short: "BVSc & AH",
+          code: "BVSCAH",
+        },
       ],
       years: [1, 2, 3, 4],
-      parts: ['I', 'II'],
-      semesters: [1, 2, 3, 4, 5, 6, 7, 8]
+      parts: ["I", "II"],
+      semesters: [1, 2, 3, 4, 5, 6, 7, 8],
     },
-    'CTEVT': {
-      name: 'Council for Technical Education and Vocational Training',
-      short: 'CTEVT',
-      type: 'diploma',
+    CTEVT: {
+      name: "Council for Technical Education and Vocational Training",
+      short: "CTEVT",
+      type: "diploma",
       courses: [
-        { name: 'Diploma in Civil Engineering', short: 'Civil Engineering', code: 'DCE' },
-        { name: 'Diploma in Computer Engineering', short: 'Computer Engineering', code: 'DCOE' },
-        { name: 'Diploma in Electrical Engineering', short: 'Electrical Engineering', code: 'DEE' },
-        { name: 'Diploma in Mechanical Engineering', short: 'Mechanical Engineering', code: 'DME' },
-        { name: 'Diploma in Electronics Engineering', short: 'Electronics Engineering', code: 'DEELEC' },
-        { name: 'Diploma in Automobile Engineering', short: 'Automobile Engineering', code: 'DAE' },
-        { name: 'Diploma in Information Technology', short: 'Information Technology', code: 'DIT' },
-        { name: 'Diploma in Pharmacy', short: 'Pharmacy', code: 'DPHARM' },
-        { name: 'Diploma in Nursing', short: 'Nursing', code: 'DNURS' },
-        { name: 'Diploma in Hotel Management', short: 'Hotel Management', code: 'DHM' }
+        {
+          name: "Diploma in Civil Engineering",
+          short: "Civil Engineering",
+          code: "DCE",
+        },
+        {
+          name: "Diploma in Computer Engineering",
+          short: "Computer Engineering",
+          code: "DCOE",
+        },
+        {
+          name: "Diploma in Electrical Engineering",
+          short: "Electrical Engineering",
+          code: "DEE",
+        },
+        {
+          name: "Diploma in Mechanical Engineering",
+          short: "Mechanical Engineering",
+          code: "DME",
+        },
+        {
+          name: "Diploma in Electronics Engineering",
+          short: "Electronics Engineering",
+          code: "DEELEC",
+        },
+        {
+          name: "Diploma in Automobile Engineering",
+          short: "Automobile Engineering",
+          code: "DAE",
+        },
+        {
+          name: "Diploma in Information Technology",
+          short: "Information Technology",
+          code: "DIT",
+        },
+        { name: "Diploma in Pharmacy", short: "Pharmacy", code: "DPHARM" },
+        { name: "Diploma in Nursing", short: "Nursing", code: "DNURS" },
+        {
+          name: "Diploma in Hotel Management",
+          short: "Hotel Management",
+          code: "DHM",
+        },
       ],
       years: [1, 2, 3],
-      semesters: [1, 2, 3, 4, 5, 6]
-    }
+      semesters: [1, 2, 3, 4, 5, 6],
+    },
   };
 
   const [filters, setFilters] = useState({
@@ -211,16 +439,36 @@ export default function StudentSection() {
     courses: [],
     subjects: [],
     years: [],
-    semesters: []
+    semesters: [],
   });
 
   // Navigation steps
   const steps = [
-    { id: 0, title: 'Select Board', description: 'Choose your educational board or university' },
-    { id: 1, title: 'Choose Course', description: 'Select your course or program' },
-    { id: 2, title: 'Pick Year & Semester', description: 'Choose your academic year and semester' },
-    { id: 3, title: 'Select Subject', description: 'Choose the subject you want to study' },
-    { id: 4, title: 'Browse Books', description: 'Explore available study materials' }
+    {
+      id: 0,
+      title: "Select Board",
+      description: "Choose your educational board or university",
+    },
+    {
+      id: 1,
+      title: "Choose Course",
+      description: "Select your course or program",
+    },
+    {
+      id: 2,
+      title: "Pick Year & Semester",
+      description: "Choose your academic year and semester",
+    },
+    {
+      id: 3,
+      title: "Select Subject",
+      description: "Choose the subject you want to study",
+    },
+    {
+      id: 4,
+      title: "Browse Books",
+      description: "Explore available study materials",
+    },
   ];
 
   // Fetch available filters on component mount
@@ -233,12 +481,20 @@ export default function StudentSection() {
     if (currentStep === 4) {
       fetchStudyBooks();
     }
-  }, [currentStep, selectedBoard, selectedCourse, selectedYear, selectedSemester, selectedSubject]);
-
+  }, [
+    currentStep,
+    selectedBoard,
+    selectedCourse,
+    selectedYear,
+    selectedSemester,
+    selectedSubject,
+  ]);
 
   // Get API base URL from environment
   const getApiBaseUrl = () => {
-    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+    return (
+      process.env.NEXT_PUBLIC_API_URL || "https://adhyaan.up.railway.app/api/v1"
+    );
   };
 
   const fetchFilters = async () => {
@@ -249,13 +505,13 @@ export default function StudentSection() {
       if (response.ok) {
         const data = await response.json();
         // data.boards is an array of {name, type}
-        setFilters(prev => ({
+        setFilters((prev) => ({
           ...prev,
-          boards: data.boards.map(b => b.name)
+          boards: data.boards.map((b) => b.name),
         }));
       }
     } catch (error) {
-      console.error('Error fetching boards:', error);
+      console.error("Error fetching boards:", error);
     } finally {
       setLoading(false);
     }
@@ -265,16 +521,18 @@ export default function StudentSection() {
     const baseUrl = getApiBaseUrl();
     try {
       setLoading(true);
-      const response = await fetch(`${baseUrl}/books/academic/courses?board=${encodeURIComponent(board)}`);
+      const response = await fetch(
+        `${baseUrl}/books/academic/courses?board=${encodeURIComponent(board)}`,
+      );
       if (response.ok) {
         const data = await response.json();
-        setFilters(prev => ({
+        setFilters((prev) => ({
           ...prev,
-          courses: data.courses
+          courses: data.courses,
         }));
       }
     } catch (error) {
-      console.error('Error fetching courses:', error);
+      console.error("Error fetching courses:", error);
     } finally {
       setLoading(false);
     }
@@ -284,17 +542,19 @@ export default function StudentSection() {
     const baseUrl = getApiBaseUrl();
     try {
       setLoading(true);
-      const response = await fetch(`${baseUrl}/books/academic/year-semester?board=${encodeURIComponent(board)}&course=${encodeURIComponent(course)}`);
+      const response = await fetch(
+        `${baseUrl}/books/academic/year-semester?board=${encodeURIComponent(board)}&course=${encodeURIComponent(course)}`,
+      );
       if (response.ok) {
         const data = await response.json();
         // data has {type: 'grades', grades: []} or {type: 'year_semester', data: {}}
-        setFilters(prev => ({
+        setFilters((prev) => ({
           ...prev,
-          yearSemData: data
+          yearSemData: data,
         }));
       }
     } catch (error) {
-      console.error('Error fetching year/semester:', error);
+      console.error("Error fetching year/semester:", error);
     } finally {
       setLoading(false);
     }
@@ -307,17 +567,17 @@ export default function StudentSection() {
       let url = `${baseUrl}/books/academic/subjects?board=${encodeURIComponent(board)}&course=${encodeURIComponent(course)}`;
       if (year) url += `&year=${year}`;
       if (semester) url += `&semester=${semester}`;
-      
+
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
-        setFilters(prev => ({
+        setFilters((prev) => ({
           ...prev,
-          subjects: data.subjects
+          subjects: data.subjects,
         }));
       }
     } catch (error) {
-      console.error('Error fetching subjects:', error);
+      console.error("Error fetching subjects:", error);
     } finally {
       setLoading(false);
     }
@@ -329,19 +589,21 @@ export default function StudentSection() {
       setLoading(true);
       const params = new URLSearchParams();
 
-      if (selectedBoard) params.append('board', selectedBoard);
-      if (selectedCourse) params.append('course_name', selectedCourse);
-      if (selectedYear) params.append('year', selectedYear);
-      if (selectedSemester) params.append('semester', selectedSemester);
-      if (selectedSubject) params.append('subject_name', selectedSubject);
+      if (selectedBoard) params.append("board", selectedBoard);
+      if (selectedCourse) params.append("course_name", selectedCourse);
+      if (selectedYear) params.append("year", selectedYear);
+      if (selectedSemester) params.append("semester", selectedSemester);
+      if (selectedSubject) params.append("subject_name", selectedSubject);
 
-      const response = await fetch(`${baseUrl}/books/academic?${params}&limit=100`);
+      const response = await fetch(
+        `${baseUrl}/books/academic?${params}&limit=100`,
+      );
       if (response.ok) {
         const data = await response.json();
         setStudyBooks(data.books || []);
       }
     } catch (error) {
-      console.error('Error fetching study books:', error);
+      console.error("Error fetching study books:", error);
     } finally {
       setLoading(false);
     }
@@ -349,19 +611,19 @@ export default function StudentSection() {
 
   const handleBoardSelect = (board) => {
     setSelectedBoard(board);
-    setSelectedCourse('');
-    setSelectedYear('');
-    setSelectedSemester('');
-    setSelectedSubject('');
+    setSelectedCourse("");
+    setSelectedYear("");
+    setSelectedSemester("");
+    setSelectedSubject("");
     fetchCoursesForBoard(board);
     setCurrentStep(1);
   };
 
   const handleCourseSelect = (course) => {
     setSelectedCourse(course);
-    setSelectedYear('');
-    setSelectedSemester('');
-    setSelectedSubject('');
+    setSelectedYear("");
+    setSelectedSemester("");
+    setSelectedSubject("");
     fetchYearSemesterForCourse(selectedBoard, course);
     setCurrentStep(2);
   };
@@ -369,7 +631,7 @@ export default function StudentSection() {
   const handleYearSemesterSelect = (year, semester) => {
     setSelectedYear(year);
     setSelectedSemester(semester);
-    setSelectedSubject('');
+    setSelectedSubject("");
     fetchSubjects(selectedBoard, selectedCourse, year, semester);
     setCurrentStep(3);
   };
@@ -387,19 +649,22 @@ export default function StudentSection() {
 
   const resetNavigation = () => {
     setCurrentStep(0);
-    setSelectedBoard('');
-    setSelectedCourse('');
-    setSelectedYear('');
-    setSelectedSemester('');
-    setSelectedSubject('');
+    setSelectedBoard("");
+    setSelectedCourse("");
+    setSelectedYear("");
+    setSelectedSemester("");
+    setSelectedSubject("");
     setStudyBooks([]);
   };
 
-  const filteredBooks = studyBooks.filter(book => {
-    const matchesSearch = !searchQuery ||
+  const filteredBooks = studyBooks.filter((book) => {
+    const matchesSearch =
+      !searchQuery ||
       book.book_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (book.subject_name && book.subject_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (book.course_name && book.course_name.toLowerCase().includes(searchQuery.toLowerCase()));
+      (book.subject_name &&
+        book.subject_name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (book.course_name &&
+        book.course_name.toLowerCase().includes(searchQuery.toLowerCase()));
 
     return matchesSearch;
   });
@@ -430,7 +695,7 @@ export default function StudentSection() {
           const board = boardData[boardKey] || {
             name: boardKey,
             short: boardKey,
-            type: 'university'
+            type: "university",
           };
 
           return (
@@ -454,15 +719,28 @@ export default function StudentSection() {
     return (
       <div className={styles.selectionContainer}>
         <div className={styles.selectionHeader}>
-          <Button variant="ghost" onClick={goToPreviousStep} className={styles.backButton}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M19 12H5"/>
-              <path d="M12 19l-7-7 7-7"/>
+          <Button
+            variant="ghost"
+            onClick={goToPreviousStep}
+            className={styles.backButton}
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M19 12H5" />
+              <path d="M12 19l-7-7 7-7" />
             </svg>
             Back
           </Button>
           <div className={styles.breadcrumb}>
-            <span className={styles.breadcrumbItem}>{boardInfo?.short || selectedBoard}</span>
+            <span className={styles.breadcrumbItem}>
+              {boardInfo?.short || selectedBoard}
+            </span>
             <span className={styles.breadcrumbSeparator}>→</span>
             <span className={styles.breadcrumbItem}>Courses</span>
           </div>
@@ -476,16 +754,26 @@ export default function StudentSection() {
         <div className={styles.optionsGrid}>
           {filters.courses.map((courseName, index) => {
             // Check if we have additional info in boardData (fallback)
-            const courseInfo = boardInfo?.courses?.find(c => c.name === courseName) || {
+            const courseInfo = boardInfo?.courses?.find(
+              (c) => c.name === courseName,
+            ) || {
               name: courseName,
-              short: courseName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 4),
-              code: courseName.replace(/\s+/g, '_')
+              short: courseName
+                .split(" ")
+                .map((w) => w[0])
+                .join("")
+                .toUpperCase()
+                .slice(0, 4),
+              code: courseName.replace(/\s+/g, "_"),
             };
 
             return (
               <CourseCard
                 key={courseInfo.code + index}
-                course={{ ...courseInfo, type: boardInfo?.type || 'university' }}
+                course={{
+                  ...courseInfo,
+                  type: boardInfo?.type || "university",
+                }}
                 onClick={() => handleCourseSelect(courseName)}
                 isSelected={selectedCourse === courseName}
                 index={index}
@@ -501,14 +789,25 @@ export default function StudentSection() {
     const boardInfo = boardData[selectedBoard];
 
     // For NEB (school level), show grades
-    if (boardInfo?.type === 'school') {
+    if (boardInfo?.type === "school") {
       return (
         <div className={styles.selectionContainer}>
           <div className={styles.selectionHeader}>
-            <Button variant="ghost" onClick={goToPreviousStep} className={styles.backButton}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M19 12H5"/>
-                <path d="M12 19l-7-7 7-7"/>
+            <Button
+              variant="ghost"
+              onClick={goToPreviousStep}
+              className={styles.backButton}
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M19 12H5" />
+                <path d="M12 19l-7-7 7-7" />
               </svg>
               Back
             </Button>
@@ -527,27 +826,36 @@ export default function StudentSection() {
           </p>
 
           <div className={styles.optionsGrid}>
-            {boardInfo.years.map(grade => (
+            {boardInfo.years.map((grade) => (
               <Card
                 key={grade}
                 hover
-                className={`${styles.optionCard} ${selectedYear === grade ? styles.selected : ''}`}
-                onClick={() => handleYearSemesterSelect(grade, '')}
+                className={`${styles.optionCard} ${selectedYear === grade ? styles.selected : ""}`}
+                onClick={() => handleYearSemesterSelect(grade, "")}
               >
                 <div className={styles.optionIcon}>
-                  <div className={styles.gradeNumber}>{grade.replace('Grade ', '')}</div>
+                  <div className={styles.gradeNumber}>
+                    {grade.replace("Grade ", "")}
+                  </div>
                 </div>
                 <div className={styles.optionContent}>
                   <h3 className={styles.optionTitle}>{grade}</h3>
                   <p className={styles.optionDescription}>
-                    {grade === 'Grade 11' && '11th Grade - First Year'}
-                    {grade === 'Grade 12' && '12th Grade - Final Year'}
+                    {grade === "Grade 11" && "11th Grade - First Year"}
+                    {grade === "Grade 12" && "12th Grade - Final Year"}
                   </p>
                 </div>
                 {selectedYear === grade && (
                   <div className={styles.checkIcon}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                      <polyline points="20,6 9,17 4,12"/>
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                    >
+                      <polyline points="20,6 9,17 4,12" />
                     </svg>
                   </div>
                 )}
@@ -560,21 +868,34 @@ export default function StudentSection() {
 
     // For other boards, show year/semester/part structure
     const years = boardInfo?.years || [1, 2, 3, 4];
-    const parts = boardInfo?.parts || ['I', 'II'];
+    const parts = boardInfo?.parts || ["I", "II"];
     const semesters = boardInfo?.semesters || [1, 2, 3, 4, 5, 6, 7, 8];
 
     return (
       <div className={styles.selectionContainer}>
         <div className={styles.selectionHeader}>
-          <Button variant="ghost" onClick={goToPreviousStep} className={styles.backButton}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M19 12H5"/>
-              <path d="M12 19l-7-7 7-7"/>
+          <Button
+            variant="ghost"
+            onClick={goToPreviousStep}
+            className={styles.backButton}
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M19 12H5" />
+              <path d="M12 19l-7-7 7-7" />
             </svg>
             Back
           </Button>
           <div className={styles.breadcrumb}>
-            <span className={styles.breadcrumbItem}>{boardInfo?.short || selectedBoard}</span>
+            <span className={styles.breadcrumbItem}>
+              {boardInfo?.short || selectedBoard}
+            </span>
             <span className={styles.breadcrumbSeparator}>→</span>
             <span className={styles.breadcrumbItem}>{selectedCourse}</span>
             <span className={styles.breadcrumbSeparator}>→</span>
@@ -582,22 +903,26 @@ export default function StudentSection() {
           </div>
         </div>
 
-        <h2 className={styles.selectionTitle}>Choose Your Year, Part & Semester</h2>
+        <h2 className={styles.selectionTitle}>
+          Choose Your Year, Part & Semester
+        </h2>
         <p className={styles.selectionDescription}>
           Select your current academic year, part, and semester
         </p>
 
         <div className={styles.yearSemesterContainer}>
-          {filters.yearSemData?.type === 'grades' ? (
+          {filters.yearSemData?.type === "grades" ? (
             <div className={styles.optionsGrid}>
-              {filters.yearSemData.grades.map(gradeNum => {
+              {filters.yearSemData.grades.map((gradeNum) => {
                 const gradeLabel = `Grade ${gradeNum}`;
                 return (
                   <Card
                     key={gradeNum}
                     hover
-                    className={`${styles.optionCard} ${selectedYear === gradeNum.toString() ? styles.selected : ''}`}
-                    onClick={() => handleYearSemesterSelect(gradeNum.toString(), '')}
+                    className={`${styles.optionCard} ${selectedYear === gradeNum.toString() ? styles.selected : ""}`}
+                    onClick={() =>
+                      handleYearSemesterSelect(gradeNum.toString(), "")
+                    }
                   >
                     <div className={styles.optionIcon}>
                       <div className={styles.gradeNumber}>{gradeNum}</div>
@@ -609,37 +934,58 @@ export default function StudentSection() {
                 );
               })}
             </div>
-          ) : filters.yearSemData?.type === 'year_semester' ? (
+          ) : filters.yearSemData?.type === "year_semester" ? (
             Object.entries(filters.yearSemData.data).map(([year, data]) => (
               <div key={year} className={styles.yearSection}>
                 <div className={styles.yearTitle}>Year {year}</div>
                 <div className={styles.partsGrid}>
                   {data.parts ? (
-                    data.parts.map(part => (
-                      <div key={`${year}-${part}`} className={styles.partColumn}>
+                    data.parts.map((part) => (
+                      <div
+                        key={`${year}-${part}`}
+                        className={styles.partColumn}
+                      >
                         <div className={styles.partHeader}>Part {part}</div>
-                        {data.semesters?.filter(sem => sem % 2 === (part === 'I' ? 1 : 0)).map(semester => (
-                          <SemCard
-                            key={`${year}-${part}-${semester}`}
-                            year={year}
-                            part={part}
-                            semester={semester}
-                            onClick={() => handleYearSemesterSelect(year.toString(), semester.toString())}
-                            isSelected={selectedYear === year.toString() && selectedSemester === semester.toString()}
-                          />
-                        ))}
+                        {data.semesters
+                          ?.filter((sem) => sem % 2 === (part === "I" ? 1 : 0))
+                          .map((semester) => (
+                            <SemCard
+                              key={`${year}-${part}-${semester}`}
+                              year={year}
+                              part={part}
+                              semester={semester}
+                              onClick={() =>
+                                handleYearSemesterSelect(
+                                  year.toString(),
+                                  semester.toString(),
+                                )
+                              }
+                              isSelected={
+                                selectedYear === year.toString() &&
+                                selectedSemester === semester.toString()
+                              }
+                            />
+                          ))}
                       </div>
                     ))
                   ) : (
                     <div className={styles.partColumn}>
-                      {data.semesters?.map(semester => (
+                      {data.semesters?.map((semester) => (
                         <SemCard
                           key={`${year}-all-${semester}`}
                           year={year}
                           part=""
                           semester={semester}
-                          onClick={() => handleYearSemesterSelect(year.toString(), semester.toString())}
-                          isSelected={selectedYear === year.toString() && selectedSemester === semester.toString()}
+                          onClick={() =>
+                            handleYearSemesterSelect(
+                              year.toString(),
+                              semester.toString(),
+                            )
+                          }
+                          isSelected={
+                            selectedYear === year.toString() &&
+                            selectedSemester === semester.toString()
+                          }
                         />
                       ))}
                     </div>
@@ -648,7 +994,9 @@ export default function StudentSection() {
               </div>
             ))
           ) : (
-            <div className={styles.emptyState}>No year/semester data available</div>
+            <div className={styles.emptyState}>
+              No year/semester data available
+            </div>
           )}
         </div>
       </div>
@@ -658,10 +1006,21 @@ export default function StudentSection() {
   const renderSubjectSelection = () => (
     <div className={styles.selectionContainer}>
       <div className={styles.selectionHeader}>
-        <Button variant="ghost" onClick={goToPreviousStep} className={styles.backButton}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M19 12H5"/>
-            <path d="M12 19l-7-7 7-7"/>
+        <Button
+          variant="ghost"
+          onClick={goToPreviousStep}
+          className={styles.backButton}
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M19 12H5" />
+            <path d="M12 19l-7-7 7-7" />
           </svg>
           Back
         </Button>
@@ -670,7 +1029,9 @@ export default function StudentSection() {
           <span className={styles.breadcrumbSeparator}>→</span>
           <span className={styles.breadcrumbItem}>{selectedCourse}</span>
           <span className={styles.breadcrumbSeparator}>→</span>
-          <span className={styles.breadcrumbItem}>Year {selectedYear} Sem {selectedSemester}</span>
+          <span className={styles.breadcrumbItem}>
+            Year {selectedYear} Sem {selectedSemester}
+          </span>
           <span className={styles.breadcrumbSeparator}>→</span>
           <span className={styles.breadcrumbItem}>Subjects</span>
         </div>
@@ -682,17 +1043,24 @@ export default function StudentSection() {
       </p>
 
       <div className={styles.optionsGrid}>
-        {filters.subjects.map(subject => (
+        {filters.subjects.map((subject) => (
           <Card
             key={subject}
             hover
-            className={`${styles.optionCard} ${selectedSubject === subject ? styles.selected : ''}`}
+            className={`${styles.optionCard} ${selectedSubject === subject ? styles.selected : ""}`}
             onClick={() => handleSubjectSelect(subject)}
           >
             <div className={styles.optionIcon}>
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
               </svg>
             </div>
             <div className={styles.optionContent}>
@@ -703,8 +1071,15 @@ export default function StudentSection() {
             </div>
             {selectedSubject === subject && (
               <div className={styles.checkIcon}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                  <polyline points="20,6 9,17 4,12"/>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                >
+                  <polyline points="20,6 9,17 4,12" />
                 </svg>
               </div>
             )}
@@ -718,19 +1093,41 @@ export default function StudentSection() {
     <div className={styles.booksContainer}>
       <div className={styles.booksHeader}>
         <div className={styles.booksNavigation}>
-          <Button variant="ghost" onClick={goToPreviousStep} className={styles.backButton}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M19 12H5"/>
-              <path d="M12 19l-7-7 7-7"/>
+          <Button
+            variant="ghost"
+            onClick={goToPreviousStep}
+            className={styles.backButton}
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M19 12H5" />
+              <path d="M12 19l-7-7 7-7" />
             </svg>
             Back
           </Button>
-          <Button variant="outline" onClick={resetNavigation} className={styles.resetButton}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
-              <path d="M21 3v5h-5"/>
-              <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
-              <path d="M8 16H3v5"/>
+          <Button
+            variant="outline"
+            onClick={resetNavigation}
+            className={styles.resetButton}
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+              <path d="M21 3v5h-5" />
+              <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+              <path d="M8 16H3v5" />
             </svg>
             Start Over
           </Button>
@@ -741,16 +1138,25 @@ export default function StudentSection() {
           <span className={styles.breadcrumbSeparator}>→</span>
           <span className={styles.breadcrumbItem}>{selectedCourse}</span>
           <span className={styles.breadcrumbSeparator}>→</span>
-          <span className={styles.breadcrumbItem}>Year {selectedYear} Sem {selectedSemester}</span>
+          <span className={styles.breadcrumbItem}>
+            Year {selectedYear} Sem {selectedSemester}
+          </span>
           <span className={styles.breadcrumbSeparator}>→</span>
           <span className={styles.breadcrumbItem}>{selectedSubject}</span>
         </div>
 
         <div className={styles.booksSearch}>
           <div className={styles.searchBar}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="11" cy="11" r="8"/>
-              <path d="m21 21-4.35-4.35"/>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
             </svg>
             <input
               type="search"
@@ -788,9 +1194,9 @@ export default function StudentSection() {
                   level: book.course_name,
                   board: book.board,
                   class: `Year ${book.year} - Sem ${book.semester}`,
-                  cover: '#4F46E5',
+                  cover: "#4F46E5",
                   rating: 4.5,
-                  students: Math.floor(Math.random() * 1000) + 100
+                  students: Math.floor(Math.random() * 1000) + 100,
                 }}
                 formatGenre={formatGenre}
               />
@@ -798,12 +1204,21 @@ export default function StudentSection() {
           </div>
         ) : (
           <div className={styles.emptyState}>
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
-              <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-              <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            <svg
+              width="64"
+              height="64"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1"
+            >
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+              <path d="M6 12v5c3 3 9 3 12 0v-5" />
             </svg>
             <h3>No books found</h3>
-            <p>No study materials are currently available for this selection.</p>
+            <p>
+              No study materials are currently available for this selection.
+            </p>
             <Button variant="primary" onClick={goToPreviousStep}>
               Choose Different Subject
             </Button>
@@ -817,7 +1232,9 @@ export default function StudentSection() {
     <div className={styles.container}>
       <div className="container">
         <h1 className={styles.pageTitle}>Student Section</h1>
-        <p className={styles.pageSubtitle}>Academic curriculum-based study materials</p>
+        <p className={styles.pageSubtitle}>
+          Academic curriculum-based study materials
+        </p>
 
         {/* Step Indicator */}
         {renderStepIndicator()}

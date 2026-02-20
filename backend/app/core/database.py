@@ -9,13 +9,23 @@ class Database:
     """PostgreSQL database connection manager."""
     
     def __init__(self):
+        # Default connection parameters
         self.connection_params = {
             'host': settings.DATABASE_HOST,
             'port': settings.DATABASE_PORT,
             'database': settings.DATABASE_NAME,
             'user': settings.DATABASE_USER,
             'password': settings.DATABASE_PASSWORD,
+            'sslmode': 'require',
         }
+        
+        # Resolve host to IPv4 to prevent IPv6 connection issues (common with Supabase)
+        try:
+            import socket
+            host_ip = socket.gethostbyname(settings.DATABASE_HOST)
+            self.connection_params['host'] = host_ip
+        except Exception as e:
+            print(f"Warning: Could not resolve IPv4 for database host: {e}")
     
     def get_connection(self):
         """Get a new database connection."""

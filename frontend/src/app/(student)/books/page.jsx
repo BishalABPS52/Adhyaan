@@ -24,7 +24,9 @@ export default function BooksPage() {
 
   // Get API base URL from environment
   const getApiBaseUrl = () => {
-    return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+    return (
+      process.env.NEXT_PUBLIC_API_URL || "https://adhyaan.up.railway.app/api/v1"
+    );
   };
 
   const fetchBooks = async () => {
@@ -82,7 +84,7 @@ export default function BooksPage() {
     if (book && book.file_path) {
       // Check if it's a Cloudinary URL
       const backendUrl =
-        process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+        process.env.NEXT_PUBLIC_BACKEND_URL || "https://adhyaan.up.railway.app";
       const fileUrl = book.file_path.startsWith("http")
         ? book.file_path
         : `${backendUrl}/${book.file_path}`;
