@@ -1,12 +1,15 @@
-from fastapi import FastAPI, Request, status
+from fastapi import FastAPI, Request, status, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse, FileResponse
+from fastapi.responses import JSONResponse, FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi.openapi.docs import get_swagger_ui_html, get_redoc_html
 from app.core.config import settings
 from app.api.v1.router import router as api_v1_router
 import logging
 import os
+import secrets
 
 
 # Configure logging
@@ -17,15 +20,51 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-# Create FastAPI application
+# HTTP Basic Auth for docs
+security = HTTPBasic()
+DOCS_USERNAME = "admin1"
+DOCS_PASSWORD = "password123"
+
+
+def verify_docs_credentials(credentials: HTTPBasicCredentials = Depends(security)):
+    """Verify credentials for accessing API docs."""
+    correct_username = secrets.compare_digest(credentials.username, DOCS_USERNAME)
+    correct_password = secrets.compare_digest(credentials.password, DOCS_PASSWORD)
+    if not (correct_username and correct_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid credentials",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+    return credentials
+
+
+# Create FastAPI application — docs disabled by default (served manually with auth)
 app = FastAPI(
     title=settings.APP_NAME,
     version=settings.APP_VERSION,
     description="Backend API for Adhyaan ",
-    docs_url="/api/docs",
-    redoc_url="/api/redoc",
-    openapi_url="/api/openapi.json"
+    docs_url=None,
+    redoc_url=None,
+    openapi_url=None,
 )
+
+
+# Protected docs endpoints
+@app.get("/api/openapi.json", include_in_schema=False)
+async def get_openapi(credentials: HTTPBasicCredentials = Depends(verify_docs_credentials)):
+    return app.openapi()
+
+
+@app.get("/api/docs", include_in_schema=False)
+async def get_docs(credentials: HTTPBasicCredentials = Depends(verify_docs_credentials)):
+    return get_swagger_ui_html(openapi_url="/api/openapi.json", title=f"{settings.APP_NAME} - Docs")
+
+
+@app.get("/api/redoc", include_in_schema=False)
+async def get_redoc(credentials: HTTPBasicCredentials = Depends(verify_docs_credentials)):
+    return get_redoc_html(openapi_url="/api/openapi.json", title=f"{settings.APP_NAME} - ReDoc")
+
 
 
 # CORS Middleware
