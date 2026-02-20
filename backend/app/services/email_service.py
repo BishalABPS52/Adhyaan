@@ -73,7 +73,7 @@ def send_verification_email(to_email: str, code: str, full_name: str = "User") -
         msg.set_content(f"""
 Hello {full_name},
 
-Welcome to Adhyaan! 🎓
+Welcome to Adhyaan! 
 
 Your verification code is: {code}
 
