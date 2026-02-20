@@ -105,11 +105,6 @@ const ReaderNavbar = () => {
                   Profile
                 </Link>
                 {canSwitchToAuthor && (
-                  <Link href="/dashboard" className={styles.dropdownItem}>
-                    Dashboard
-                  </Link>
-                )}
-                {canSwitchToAuthor && (
                   <button
                     className={styles.dropdownItem}
                     onClick={() => handleRoleSwitch("author")}
@@ -192,15 +187,6 @@ const ReaderNavbar = () => {
           >
             Help
           </Link>
-          {canSwitchToAuthor && (
-            <Link
-              href="/dashboard"
-              className={styles.mobileLink}
-              onClick={toggleMobileMenu}
-            >
-              Dashboard
-            </Link>
-          )}
           {canSwitchToAuthor && (
             <button
               className={styles.mobileLink}
