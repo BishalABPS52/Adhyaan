@@ -55,27 +55,44 @@ def verify_code(email: str, code: str, consume: bool = True) -> bool:
     return True
 
 
-def get_smtp_connection(timeout: int = 30):
-    """Create a secured SMTP connection based on configuration."""
+def get_smtp_connection(timeout: int = 15):
+    """
+    Create a secured SMTP connection.
+    Tries Port 465 (SSL) first, falls back to 587 (STARTTLS) if blocked.
+    """
     host = settings.EMAIL_HOST
-    port = settings.EMAIL_PORT
     
-    # Force IPv4 to avoid Network unreachable errors on some cloud providers
+    # Try Port 465 (SSL) first
     try:
-        host_info = socket.getaddrinfo(host, port, socket.AF_INET, socket.SOCK_STREAM)[0]
-        resolved_host = host_info[4][0]
+        # We try resolving to IPv4 specifically because many cloud environments 
+        # have broken IPv6 which causes "Network unreachable" or long delays.
+        addr_info = socket.getaddrinfo(host, 465, socket.AF_INET, socket.SOCK_STREAM)
+        ip_address = addr_info[0][4][0]
+        
+        print(f"Connecting to SMTP (SSL) at {ip_address}:465...")
+        return smtplib.SMTP_SSL(ip_address, 465, timeout=timeout)
     except Exception as e:
-        print(f"Warning: DNS resolution failed, using host string: {e}")
-        resolved_host = host
-
-    if port == 465:
-        # Port 465 uses Implicit SSL
-        return smtplib.SMTP_SSL(resolved_host, port, timeout=timeout)
-    else:
-        # Other ports (like 587) use STARTTLS
-        smtp = smtplib.SMTP(resolved_host, port, timeout=timeout)
-        smtp.starttls()
-        return smtp
+        print(f"Port 465 failed ({type(e).__name__}): {e}")
+        print("Attempting fallback to Port 587 (STARTTLS)...")
+        
+        try:
+            # Fallback to Port 587 (Standard for many cloud providers)
+            # We use the hostname directly here to let it try standard resolution
+            smtp = smtplib.SMTP(host, 587, timeout=timeout)
+            smtp.starttls()
+            return smtp
+        except Exception as e2:
+            print(f"Port 587 also failed: {e2}")
+            # Final attempt: direct IP on 587
+            try:
+                addr_info = socket.getaddrinfo(host, 587, socket.AF_INET, socket.SOCK_STREAM)
+                ip_address = addr_info[0][4][0]
+                smtp = smtplib.SMTP(ip_address, 587, timeout=timeout)
+                smtp.starttls()
+                return smtp
+            except Exception as e3:
+                print(f"All SMTP connection attempts failed: {e3}")
+                raise e2 # Raise the 587 error
 
 
 def send_verification_email(to_email: str, code: str, full_name: str = "User") -> bool:
