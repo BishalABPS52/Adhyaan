@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, HTTPException, status, Depends, BackgroundTasks
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel, EmailStr
 from typing import Optional
@@ -71,7 +71,8 @@ class CheckEmailRequest(BaseModel):
 
 
 @router.post("/send-verification")
-async def send_verification_code(request: VerificationRequest):
+@router.post("/send-verification")
+async def send_verification_code(request: VerificationRequest, background_tasks: BackgroundTasks):
     """
     Send verification code to email.
     
@@ -82,18 +83,13 @@ async def send_verification_code(request: VerificationRequest):
     code = email_service.generate_verification_code()
     email_service.store_verification_code(request.email, code)
     
-    # Send email
-    success = email_service.send_verification_email(
+    # Send email in background
+    background_tasks.add_task(
+        email_service.send_verification_email,
         request.email, 
         code, 
         request.full_name
     )
-    
-    if not success:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to send verification email. Please check email configuration."
-        )
     
     return {
         "message": "Verification code sent successfully",
@@ -124,20 +120,27 @@ async def verify_code(request: VerifyCodeRequest):
 
 
 @router.post("/resend-verification")
-async def resend_verification_code(request: VerificationRequest):
+@router.post("/resend-verification")
+async def resend_verification_code(request: VerificationRequest, background_tasks: BackgroundTasks):
     """
     Resend verification code to email.
     
     - **email**: Email address
     - **full_name**: User's full name
     """
-    code = email_service.resend_verification_code(request.email, request.full_name)
+    # Generate new code
+    code = email_service.generate_verification_code()
     
-    if not code:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to resend verification code"
-        )
+    # Store it
+    email_service.store_verification_code(request.email, code)
+    
+    # Send email in background
+    background_tasks.add_task(
+        email_service.send_verification_email,
+        request.email, 
+        code, 
+        request.full_name
+    )
     
     return {
         "message": "Verification code resent successfully",
@@ -162,7 +165,8 @@ async def check_email(request: CheckEmailRequest):
 
 
 @router.post("/register", response_model=AuthResponse, status_code=status.HTTP_201_CREATED)
-async def register(user_data: UserCreate):
+@router.post("/register", response_model=AuthResponse, status_code=status.HTTP_201_CREATED)
+async def register(user_data: UserCreate, background_tasks: BackgroundTasks):
     """
     Register a new user.
     
@@ -174,7 +178,7 @@ async def register(user_data: UserCreate):
     
     Returns user data and JWT access token.
     """
-    return auth_service.register(user_data)
+    return auth_service.register(user_data, background_tasks)
 
 
 @router.post("/login", response_model=AuthResponse)
@@ -226,7 +230,8 @@ class ResetPasswordRequest(BaseModel):
 
 
 @router.post("/forgot-password")
-async def forgot_password(request: ForgotPasswordRequest):
+@router.post("/forgot-password")
+async def forgot_password(request: ForgotPasswordRequest, background_tasks: BackgroundTasks):
     """Send password reset code to user's email."""
     try:
         print(f"Forgot password request for email: {request.email}")
@@ -248,16 +253,13 @@ async def forgot_password(request: ForgotPasswordRequest):
         email_service.store_verification_code(request.email, reset_code, expires_minutes=10)
         print("Reset code stored")
         
-        # Send email
-        print("Attempting to send email...")
-        success = await email_service.send_password_reset_email(request.email, reset_code)
-        print(f"Email send result: {success}")
-        
-        if not success:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to send reset email"
-            )
+        # Send email in background
+        print("Queueing email task...")
+        background_tasks.add_task(
+            email_service.send_password_reset_email,
+            request.email, 
+            reset_code
+        )
         
         return {"message": "If the email exists, a reset code has been sent."}
     except HTTPException:

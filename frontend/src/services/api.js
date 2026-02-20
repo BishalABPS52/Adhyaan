@@ -11,7 +11,10 @@ class ApiService {
   }
 
   async request(endpoint, options = {}) {
-    const url = `${this.baseURL}${endpoint}`;
+    const url = `${this.baseURL}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
+    
+    // Debug log
+    console.log('API Request:', url);
     
     const config = {
       method: options.method || 'GET',

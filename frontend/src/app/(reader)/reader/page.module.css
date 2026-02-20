@@ -171,15 +171,16 @@
 }
 
 @media (max-width: 768px) {
-  .pageTitle {
-    font-size: 2rem;
+  .booksGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
   
   .searchCard {
-    padding: 1.5rem;
+    padding: 1.5rem 1rem;
   }
   
-  .booksGrid {
-    grid-template-columns: 1fr;
+  .pageTitle {
+    font-size: 1.75rem;
   }
 }

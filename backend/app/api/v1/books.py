@@ -111,6 +111,7 @@ async def get_academic_books(
     subject_name: Optional[str] = Query(None),
     year: Optional[int] = Query(None),
     semester: Optional[int] = Query(None),
+    part: Optional[str] = Query(None),
     limit: int = Query(20, ge=1, le=100),
     offset: int = Query(0, ge=0)
 ):
@@ -123,7 +124,8 @@ async def get_academic_books(
         course_name=course_name,
         subject_name=subject_name,
         year=year,
-        semester=semester
+        semester=semester,
+        part=part
     )
 
     return {

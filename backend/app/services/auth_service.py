@@ -12,12 +12,13 @@ class AuthService:
     def __init__(self):
         self.user_repo = user_repository
     
-    def register(self, user_data: UserCreate) -> AuthResponse:
+    def register(self, user_data: UserCreate, background_tasks: Any = None) -> AuthResponse:
         """
         Register a new user.
         
         Args:
             user_data: User registration data
+            background_tasks: FastAPI background tasks handler
             
         Returns:
             AuthResponse with user and token
@@ -57,15 +58,27 @@ class AuthService:
             }
         )
         
-        # Send welcome email
-        try:
-            email_service.send_welcome_email(
+        # Send welcome email (background or sync)
+        if background_tasks:
+            background_tasks.add_task(
+                email_service.send_welcome_email,
                 to_email=user_data.email,
                 full_name=user_data.full_name or "User"
             )
-        except Exception as e:
-            # Log error but don't fail registration if email fails
-            print(f"Failed to send welcome email: {e}")
+        else:
+            try:
+                email_service.send_welcome_email(
+                    to_email=user_data.email,
+                    full_name=user_data.full_name or "User"
+                )
+            except Exception as e:
+                print(f"Failed to send welcome email: {e}")
+        
+        # Create response
+        user_response = UserResponse(**user_dict)
+        token = Token(access_token=access_token, token_type="bearer")
+        
+        return AuthResponse(user=user_response, token=token)
         
         # Create response
         user_response = UserResponse(**user_dict)

@@ -471,25 +471,68 @@
   }
 
   .ctaCards {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 4px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    display: grid;
+  }
+  
+  .ctaCard {
+    padding: 1.5rem 1rem;
+    height: auto;
+    min-height: 250px;
+  }
+
+  .ctaIcon {
+    width: 60px;
+    height: 60px;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .ctaCard h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .ctaCard p {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
   }
 
   .booksGrid,
   .authorsGrid,
   .reviewsGrid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .bookCard {
+    padding: 1rem;
+  }
+  
+  .bookCover {
+    height: 140px;
+  }
+  
+  .bookTitle {
+    font-size: 0.95rem;
   }
 
   .featuresGrid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
+  }
+  
+  .featureCard {
+    min-height: auto;
+    padding: 1.5rem 1rem;
+  }
+  
+  .featureIcon {
+    width: 80px;
+    height: 80px;
+    padding: 0.5rem;
   }
 
   .sectionTitle {

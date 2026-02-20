@@ -89,7 +89,9 @@ The Adhyaan Team
         msg["To"] = to_email
         
         # Send email using Gmail SMTP
-        with smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT) as smtp:
+        # Use simple SMTP with STARTTLS for broader compatibility
+        with smtplib.SMTP(settings.EMAIL_HOST, 587) as smtp:
+            smtp.starttls()
             smtp.login(settings.EMAIL_USER, settings.EMAIL_PASSWORD)
             smtp.send_message(msg)
         
@@ -126,7 +128,8 @@ The Adhyaan Team
         msg["From"] = f"{settings.EMAIL_FROM_NAME} <{settings.EMAIL_FROM}>"
         msg["To"] = to_email
         
-        with smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT) as smtp:
+        with smtplib.SMTP(settings.EMAIL_HOST, 587) as smtp:
+            smtp.starttls()
             smtp.login(settings.EMAIL_USER, settings.EMAIL_PASSWORD)
             smtp.send_message(msg)
         
@@ -157,7 +160,7 @@ def resend_verification_code(email: str, full_name: str = "User") -> Optional[st
     return None
 
 
-async def send_password_reset_email(to_email: str, reset_code: str) -> bool:
+def send_password_reset_email(to_email: str, reset_code: str) -> bool:
     """Send password reset email with reset code."""
     try:
         print(f"Attempting to send password reset email to: {to_email}")
@@ -181,8 +184,9 @@ The Adhyaan Team
         msg["From"] = f"{settings.EMAIL_FROM_NAME} <{settings.EMAIL_FROM}>"
         msg["To"] = to_email
         
-        print(f"Connecting to SMTP: {settings.EMAIL_HOST}:{settings.EMAIL_PORT}")
-        with smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT) as smtp:
+        print(f"Connecting to SMTP: {settings.EMAIL_HOST}:587")
+        with smtplib.SMTP(settings.EMAIL_HOST, 587) as smtp:
+            smtp.starttls()
             print("Logging in to SMTP...")
             smtp.login(settings.EMAIL_USER, settings.EMAIL_PASSWORD)
             print("Sending message...")

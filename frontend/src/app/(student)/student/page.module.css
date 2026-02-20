@@ -20,6 +20,7 @@
 .mainCard {
   padding: 0;
   margin-bottom: 3rem;
+  margin-top: 5px;
 }
 
 /* Step Indicator */
@@ -28,7 +29,7 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 3rem;
+  margin-bottom: 5px;
   padding: 0 1rem;
   position: relative;
 }

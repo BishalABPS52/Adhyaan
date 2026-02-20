@@ -13,8 +13,12 @@ class AcademicBookRepository:
     def __init__(self):
         self.db = Database()
 
-    def create_book(self, uploaded_by: UUID, book_data: AcademicBookCreate, file_type: str = 'pdf') -> UUID:
+    def create_book(self, uploaded_author_id: UUID, book_data: AcademicBookCreate, file_type: str = 'pdf') -> UUID:
         """Create a new academic book."""
+        # Normalize subject name to ensure consistency across frontend/backend
+        if book_data.subject_name:
+            book_data.subject_name = book_data.subject_name.strip().title()
+
         query = """
         INSERT INTO academic_books (
             board, book_name, course_name, level, upload_type, year, part, semester,
@@ -37,7 +41,7 @@ class AcademicBookRepository:
                 book_data.chapter_number,
                 book_data.file_url,
                 file_type,
-                str(uploaded_by),
+                str(uploaded_author_id),
                 book_data.cover_image_url,
                 book_data.document_provider
             ))
@@ -93,6 +97,7 @@ class AcademicBookRepository:
         subject_name: Optional[str] = None,
         year: Optional[int] = None,
         semester: Optional[int] = None,
+        part: Optional[str] = None,
         limit: int = 20,
         offset: int = 0
     ) -> List[AcademicBookResponse]:
@@ -116,13 +121,16 @@ class AcademicBookRepository:
         if semester:
             conditions.append("semester = %s")
             params.append(semester)
+        if part:
+            conditions.append("part = %s")
+            params.append(part)
 
         where_clause = " AND ".join(conditions)
         query = f"""
         SELECT b.*, u.full_name as uploaded_by_name
         FROM academic_books b
         LEFT JOIN users u ON b.uploaded_author_id = u.id
-        WHERE {where_clause.replace('is_active', 'b.is_active').replace('board', 'b.board').replace('year', 'b.year').replace('semester', 'b.semester')}
+        WHERE {where_clause.replace('is_active', 'b.is_active').replace('board', 'b.board').replace('year', 'b.year').replace('semester', 'b.semester').replace('part', 'b.part')}
         ORDER BY b.created_at DESC
         LIMIT %s OFFSET %s
         """

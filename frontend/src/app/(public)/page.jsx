@@ -173,7 +173,7 @@ export default function HomePage() {
       </section>
 
       {/* Featured Books */}
-      <section className={styles.section} onClick={handleAnyClick}>
+      <section className={styles.section}>
         <div className="container">
           <h2 className={styles.sectionTitle}>Featured Books</h2>
           {loading ? (
@@ -193,7 +193,7 @@ export default function HomePage() {
       </section>
 
       {/* Featured Authors */}
-      <section className={styles.section} onClick={handleAnyClick}>
+      <section className={styles.section}>
         <div className="container">
           <h2 className={styles.sectionTitle}>Featured Authors</h2>
           {loading ? (
@@ -257,7 +257,7 @@ export default function HomePage() {
       </section>
 
       {/* Why Choose Adhyaan */}
-      <section className={styles.features} onClick={handleAnyClick}>
+      <section className={styles.features}>
         <div className="container">
           <h2 className={styles.sectionTitle}>Why Choose Adhyaan?</h2>
           <div className={styles.featuresGrid}>
