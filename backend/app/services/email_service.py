@@ -91,7 +91,7 @@ The Adhyaan Team
         
         # Send email using Gmail SMTP
         # Use simple SMTP with STARTTLS for broader compatibility
-        with smtplib.SMTP(settings.EMAIL_HOST, 587) as smtp:
+        with smtplib.SMTP(settings.EMAIL_HOST, 465) as smtp:
             smtp.starttls()
             smtp.login(settings.EMAIL_USER, settings.EMAIL_PASSWORD)
             smtp.send_message(msg)
@@ -129,7 +129,7 @@ The Adhyaan Team
         msg["From"] = f"{settings.EMAIL_FROM_NAME} <{settings.EMAIL_FROM}>"
         msg["To"] = to_email
         
-        with smtplib.SMTP(settings.EMAIL_HOST, 587) as smtp:
+        with smtplib.SMTP(settings.EMAIL_HOST, 465) as smtp:
             smtp.starttls()
             smtp.login(settings.EMAIL_USER, settings.EMAIL_PASSWORD)
             smtp.send_message(msg)
@@ -185,14 +185,14 @@ The Adhyaan Team
         msg["From"] = f"{settings.EMAIL_FROM_NAME} <{settings.EMAIL_FROM}>"
         msg["To"] = to_email
         
-        print(f"Connecting to SMTP: {settings.EMAIL_HOST}:587")
+        print(f"Connecting to SMTP: {settings.EMAIL_HOST}:465")
         try:
             # Force IPv4 to avoid Network unreachable errors
-            host_info = socket.getaddrinfo(settings.EMAIL_HOST, 587, socket.AF_INET, socket.SOCK_STREAM)[0]
+            host_info = socket.getaddrinfo(settings.EMAIL_HOST, 465, socket.AF_INET, socket.SOCK_STREAM)[0]
             host_ip = host_info[4][0]
             print(f"Resolved SMTP Host IP: {host_ip}")
 
-            with smtplib.SMTP(host_ip, 587, timeout=30) as smtp:
+            with smtplib.SMTP(host_ip, 465, timeout=30) as smtp:
                 smtp.set_debuglevel(1)  # Enable debug output
                 smtp.ehlo() # Identify ourselves
                 smtp.starttls() # Secure the connection
