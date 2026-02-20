@@ -190,7 +190,7 @@
 /* Options Grid */
 .optionsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   margin-top: 2rem;
 }
@@ -556,7 +556,7 @@
 
 .booksGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   margin-top: 2rem;
 }
@@ -743,6 +743,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .courseName {
@@ -769,12 +770,6 @@
   font-weight: 700;
   margin-bottom: 2rem;
   color: var(--text-primary);
-}
-
-.booksGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2rem;
 }
 
 .bookCard {

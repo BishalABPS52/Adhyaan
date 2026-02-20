@@ -21,9 +21,9 @@ class AcademicBookRepository:
 
         query = """
         INSERT INTO academic_books (
-            board, book_name, course_name, level, upload_type, year, part, semester,
+            board, book_name, course_name, course_code, level, upload_type, year, part, semester,
             subject, chapter_name, chapter_number, file_path, file_type, uploaded_author_id, cover_image_url, document_provider
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         RETURNING id
         """
         with self.db.get_cursor(commit=True) as cursor:
@@ -31,6 +31,7 @@ class AcademicBookRepository:
                 book_data.board,
                 book_data.book_name,
                 book_data.course_name,
+                book_data.course_code,
                 book_data.level.value if book_data.level else None,
                 book_data.upload_type.value if book_data.upload_type else None,
                 book_data.year,
@@ -70,6 +71,7 @@ class AcademicBookRepository:
             board=row.get('board', ''),
             book_name=row.get('book_name', ''),
             course_name=row.get('course_name'),
+            course_code=row.get('course_code'),
             level=row.get('level'),
             year=row.get('year'),
             part=row.get('part'),
@@ -98,31 +100,31 @@ class AcademicBookRepository:
         year: Optional[int] = None,
         semester: Optional[int] = None,
         part: Optional[str] = None,
-        limit: int = 20,
+        limit: int = 100,
         offset: int = 0
     ) -> List[AcademicBookResponse]:
         """Get all active academic books with optional filters."""
-        conditions = ["is_active = TRUE"]
+        conditions = ["b.is_active = TRUE"]
         params = []
 
         if board:
-            conditions.append("board = %s")
+            conditions.append("b.board = %s")
             params.append(board)
         if course_name:
-            conditions.append("course_name ILIKE %s")
+            conditions.append("b.course_name ILIKE %s")
             params.append(f"%{course_name}%")
         if subject_name:
-            conditions.append("(subject ILIKE %s OR subject_name ILIKE %s)")
+            conditions.append("(b.subject ILIKE %s OR b.subject_name ILIKE %s)")
             params.append(f"%{subject_name}%")
             params.append(f"%{subject_name}%")
         if year:
-            conditions.append("year = %s")
+            conditions.append("b.year = %s")
             params.append(year)
         if semester:
-            conditions.append("semester = %s")
+            conditions.append("b.semester = %s")
             params.append(semester)
         if part:
-            conditions.append("part = %s")
+            conditions.append("b.part = %s")
             params.append(part)
 
         where_clause = " AND ".join(conditions)
@@ -130,7 +132,7 @@ class AcademicBookRepository:
         SELECT b.*, u.full_name as uploaded_by_name
         FROM academic_books b
         LEFT JOIN users u ON b.uploaded_author_id = u.id
-        WHERE {where_clause.replace('is_active', 'b.is_active').replace('board', 'b.board').replace('year', 'b.year').replace('semester', 'b.semester').replace('part', 'b.part')}
+        WHERE {where_clause}
         ORDER BY b.created_at DESC
         LIMIT %s OFFSET %s
         """
@@ -170,6 +172,9 @@ class AcademicBookRepository:
         if update_data.course_name is not None:
             update_fields.append("course_name = %s")
             params.append(update_data.course_name)
+        if update_data.course_code is not None:
+            update_fields.append("course_code = %s")
+            params.append(update_data.course_code)
         if update_data.year is not None:
             update_fields.append("year = %s")
             params.append(update_data.year)
@@ -179,6 +184,9 @@ class AcademicBookRepository:
         if update_data.semester is not None:
             update_fields.append("semester = %s")
             params.append(update_data.semester)
+        if update_data.part is not None:
+            update_fields.append("part = %s")
+            params.append(update_data.part)
         if update_data.subject_name is not None:
             update_fields.append("subject = %s")
             params.append(update_data.subject_name)
@@ -243,10 +251,10 @@ class AcademicBookRepository:
                     seen_boards.add(board)
             return boards
 
-    def get_courses_by_board(self, board: str) -> List[str]:
+    def get_courses_by_board(self, board: str) -> List[Dict[str, str]]:
         """Get courses available for a specific board from courses table."""
         query = """
-        SELECT DISTINCT name
+        SELECT DISTINCT name, short_code as code
         FROM courses
         WHERE is_active = TRUE AND board = %s
         ORDER BY name
@@ -254,7 +262,7 @@ class AcademicBookRepository:
         with self.db.get_cursor() as cursor:
             cursor.execute(query, (board,))
             results = cursor.fetchall()
-            return [row["name"] for row in results if row["name"]]
+            return [{"name": row["name"], "code": row.get("code", "")} for row in results if row["name"]]
 
     def get_year_semester_options(self, board: str, course: str) -> Dict[str, Any]:
         """Get year/semester options from the courses table for structure."""

@@ -49,6 +49,7 @@ class AcademicBookCreate(BaseModel):
     board: str = Field(..., description="Educational board")
     book_name: str = Field(..., min_length=1, max_length=500)
     course_name: Optional[str] = Field(None, max_length=255)
+    course_code: Optional[str] = Field(None, max_length=100)
     level: Optional[EducationLevel] = None
     upload_type: Optional[UploadType] = UploadType.FULL_BOOK
     year: Optional[int] = Field(None, ge=1, le=20)
@@ -72,7 +73,9 @@ class AcademicBookUpdate(BaseModel):
     """Schema for updating academic book metadata."""
     book_name: Optional[str] = Field(None, min_length=1, max_length=500)
     course_name: Optional[str] = Field(None, max_length=255)
+    course_code: Optional[str] = Field(None, max_length=100)
     year: Optional[int] = Field(None, ge=1, le=20)
+    part: Optional[str] = Field(None, max_length=20)
     semester: Optional[int] = Field(None, ge=1, le=20)
     subject_name: Optional[str] = Field(None, min_length=1, max_length=255)
     chapter_name: Optional[str] = Field(None, max_length=255)
@@ -84,6 +87,7 @@ class AcademicBookResponse(BaseModel):
     board: str
     book_name: str
     course_name: Optional[str] = None
+    course_code: Optional[str] = None
     level: Optional[str] = None
     year: Optional[int] = None
     part: Optional[str] = None

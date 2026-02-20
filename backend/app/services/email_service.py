@@ -2,6 +2,7 @@
 import smtplib
 import random
 import string
+import socket
 from email.message import EmailMessage
 from datetime import datetime, timedelta
 from typing import Dict, Optional
@@ -185,12 +186,24 @@ The Adhyaan Team
         msg["To"] = to_email
         
         print(f"Connecting to SMTP: {settings.EMAIL_HOST}:587")
-        with smtplib.SMTP(settings.EMAIL_HOST, 587) as smtp:
-            smtp.starttls()
-            print("Logging in to SMTP...")
-            smtp.login(settings.EMAIL_USER, settings.EMAIL_PASSWORD)
-            print("Sending message...")
-            smtp.send_message(msg)
+        try:
+            # Force IPv4 to avoid Network unreachable errors
+            host_info = socket.getaddrinfo(settings.EMAIL_HOST, 587, socket.AF_INET, socket.SOCK_STREAM)[0]
+            host_ip = host_info[4][0]
+            print(f"Resolved SMTP Host IP: {host_ip}")
+
+            with smtplib.SMTP(host_ip, 587, timeout=30) as smtp:
+                smtp.set_debuglevel(1)  # Enable debug output
+                smtp.ehlo() # Identify ourselves
+                smtp.starttls() # Secure the connection
+                smtp.ehlo() # Re-identify as encrypted
+                print("Logging in to SMTP...")
+                smtp.login(settings.EMAIL_USER, settings.EMAIL_PASSWORD)
+                print("Sending message...")
+                smtp.send_message(msg)
+        except Exception as smtp_err:
+             print(f"SMTP Error: {smtp_err}")
+             raise smtp_err
         
         print(f"Password reset email sent successfully to: {to_email}")
         return True

@@ -84,6 +84,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = os.path.join(os.path.dirname(__file__), "../../.env")
         case_sensitive = True
+        extra = "ignore"
 
 
 # Global settings instance
