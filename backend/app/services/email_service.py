@@ -55,42 +55,55 @@ def verify_code(email: str, code: str, consume: bool = True) -> bool:
     return True
 
 
-def get_smtp_connection(timeout: int = 15):
+def get_smtp_connection(timeout: int = 30):
     """
-    Create a secured SMTP connection.
-    Tries Port 465 (SSL) first, falls back to 587 (STARTTLS).
-    Forces IPv4 to avoid network unreachable errors on Railway/cloud.
+    Create a secured SMTP connection to Gmail.
+    Tries Port 587 (STARTTLS) first — recommended for Railway.
+    Falls back to Port 465 (SSL) if 587 fails.
     """
     host = settings.EMAIL_HOST
-    
-    # 1. Try Port 465 (Implicit SSL) - Forced IPv4
-    try:
-        addr_info = socket.getaddrinfo(host, 465, socket.AF_INET, socket.SOCK_STREAM)
-        ip_address = addr_info[0][4][0]
-        print(f"Connecting to SMTP (SSL) at {ip_address}:465...")
-        return smtplib.SMTP_SSL(ip_address, 465, timeout=timeout)
-    except Exception as e:
-        print(f"Port 465 IPv4 failed: {e}")
 
-    # 2. Try Port 587 (STARTTLS) - Forced IPv4
+    # 1. Try Port 587 (STARTTLS) — Railway recommended
+    try:
+        print(f"Connecting to SMTP (STARTTLS) {host}:587...")
+        smtp = smtplib.SMTP(host, 587, timeout=timeout)
+        smtp.ehlo()
+        smtp.starttls()
+        smtp.ehlo()
+        print("SMTP 587 connected successfully.")
+        return smtp
+    except Exception as e:
+        print(f"Port 587 hostname failed: {e}")
+
+    # 2. Try Port 587 with forced IPv4
     try:
         addr_info = socket.getaddrinfo(host, 587, socket.AF_INET, socket.SOCK_STREAM)
         ip_address = addr_info[0][4][0]
-        print(f"Connecting to SMTP (STARTTLS) at {ip_address}:587...")
+        print(f"Connecting to SMTP (STARTTLS) at {ip_address}:587 (IPv4)...")
         smtp = smtplib.SMTP(ip_address, 587, timeout=timeout)
+        smtp.ehlo()
         smtp.starttls()
+        smtp.ehlo()
+        print("SMTP 587 IPv4 connected successfully.")
         return smtp
     except Exception as e:
         print(f"Port 587 IPv4 failed: {e}")
 
-    # 3. Final Fallback: Let the system handle resolution (try hostname directly)
-    print("Final attempt: letting system resolve hostname directly to port 587...")
+    # 3. Fallback: Port 465 (Implicit SSL)
     try:
-        smtp = smtplib.SMTP(host, 587, timeout=timeout)
-        smtp.starttls()
-        return smtp
+        print(f"Fallback: Connecting to SMTP (SSL) {host}:465...")
+        return smtplib.SMTP_SSL(host, 465, timeout=timeout)
     except Exception as e:
-        print(f"Final SMTP attempt failed: {e}")
+        print(f"Port 465 hostname failed: {e}")
+
+    # 4. Final: Port 465 with forced IPv4
+    try:
+        addr_info = socket.getaddrinfo(host, 465, socket.AF_INET, socket.SOCK_STREAM)
+        ip_address = addr_info[0][4][0]
+        print(f"Final attempt: SMTP SSL at {ip_address}:465 (IPv4)...")
+        return smtplib.SMTP_SSL(ip_address, 465, timeout=timeout)
+    except Exception as e:
+        print(f"All SMTP connection attempts failed: {e}")
         raise e
 
 
