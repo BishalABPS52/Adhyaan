@@ -27,7 +27,7 @@ class ApiService {
 
     // Add auth token if available
     const token = localStorage.getItem('adhyaan_token');
-    if (token) {
+    if (token && token !== 'undefined' && token !== 'null') {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
 
@@ -43,14 +43,20 @@ class ApiService {
           errorMessage = `HTTP ${response.status}: ${response.statusText}`;
         }
 
-        // Handle expired/invalid tokens by clearing local storage
-        if (response.status === 401 || errorMessage.toLowerCase().includes('token')) {
+        // Handle expired/invalid tokens by clearing local storage and redirecting
+        if (response.status === 401 || (errorMessage && errorMessage.toLowerCase().includes('token'))) {
           if (typeof window !== 'undefined') {
             localStorage.removeItem('adhyaan_token');
             localStorage.removeItem('adhyaan_user');
             localStorage.removeItem('adhyaan_role');
-            // We don't necessarily want to force a reload here, 
-            // but the state will naturally reflect 'logged out' on next check
+            
+            // Redirect to login if not already on an auth page
+            const currentPath = window.location.pathname;
+            if (!currentPath.includes('/auth/login') && !currentPath.includes('/auth/register')) {
+              // Store current path to redirect back after login
+              sessionStorage.setItem('redirectAfterLogin', currentPath);
+              window.location.href = `/auth/login?expired=true&message=${encodeURIComponent(errorMessage)}`;
+            }
           }
         }
         

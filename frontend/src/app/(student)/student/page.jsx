@@ -20,6 +20,7 @@ export default function StudentSection() {
   const [selectedCourse, setSelectedCourse] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedSemester, setSelectedSemester] = useState("");
+  const [selectedPart, setSelectedPart] = useState("");
   const [studyBooks, setStudyBooks] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -508,6 +509,7 @@ export default function StudentSection() {
         selectedCourse,
         selectedYear,
         selectedSemester,
+        selectedPart,
       );
     }
   }, [
@@ -516,6 +518,7 @@ export default function StudentSection() {
     selectedCourse,
     selectedYear,
     selectedSemester,
+    selectedPart,
   ]);
 
   // Get API base URL from environment
@@ -595,10 +598,15 @@ export default function StudentSection() {
           }
         }
 
-        // Merge local and backend courses
+        // Merge local and backend courses - ensure all are strings (names)
         const allCourses = Array.from(
-          new Set([...localCourses, ...data.courses]),
-        );
+          new Set([
+            ...localCourses,
+            ...(data.courses || []).map((c) =>
+              typeof c === "string" ? c : c.name,
+            ),
+          ]),
+        ).filter(Boolean);
         setFilters((prev) => ({
           ...prev,
           courses: allCourses,
@@ -635,7 +643,7 @@ export default function StudentSection() {
 
   // Replaced fetchStudyBooks with fetchStudyMaterial as requested
   // Removed fetchSubjects entirely
-  const fetchStudyMaterial = async (board, course, year, semester) => {
+  const fetchStudyMaterial = async (board, course, year, semester, part) => {
     const baseUrl = getApiBaseUrl();
     try {
       setLoading(true);
@@ -649,6 +657,7 @@ export default function StudentSection() {
 
       if (year) params.append("year", year);
       if (semester) params.append("semester", semester);
+      if (part) params.append("part", part);
       // No subject param
 
       const response = await fetch(
@@ -687,13 +696,15 @@ export default function StudentSection() {
     setSelectedCourse(course);
     setSelectedYear("");
     setSelectedSemester("");
+    setSelectedPart("");
     fetchYearSemesterForCourse(selectedBoard, course);
     setCurrentStep(2);
   };
 
-  const handleYearSemesterSelect = (year, semester) => {
+  const handleYearSemesterSelect = (year, semester, part = "") => {
     setSelectedYear(year);
     setSelectedSemester(semester);
+    setSelectedPart(part);
     // We skip subject selection and go straight to books
     setCurrentStep(3);
   };
@@ -1040,11 +1051,13 @@ export default function StudentSection() {
                                 handleYearSemesterSelect(
                                   year.toString(),
                                   semester.toString(),
+                                  part.toString(),
                                 )
                               }
                               isSelected={
                                 selectedYear === year.toString() &&
-                                selectedSemester === semester.toString()
+                                selectedSemester === semester.toString() &&
+                                selectedPart === part.toString()
                               }
                             />
                           ))}
@@ -1062,11 +1075,13 @@ export default function StudentSection() {
                             handleYearSemesterSelect(
                               year.toString(),
                               semester.toString(),
+                              "",
                             )
                           }
                           isSelected={
                             selectedYear === year.toString() &&
-                            selectedSemester === semester.toString()
+                            selectedSemester === semester.toString() &&
+                            selectedPart === ""
                           }
                         />
                       ))}

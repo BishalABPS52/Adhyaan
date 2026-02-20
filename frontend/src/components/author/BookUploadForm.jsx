@@ -23,6 +23,7 @@ const BookUploadForm = ({ onClose, onSuccess }) => {
   const [selectedBoard, setSelectedBoard] = useState("");
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState("");
+  const [selectedCourseCode, setSelectedCourseCode] = useState("");
 
   // Year/Semester structure from backend
   const [yearSemStructure, setYearSemStructure] = useState(null);
@@ -77,8 +78,9 @@ const BookUploadForm = ({ onClose, onSuccess }) => {
         .then((r) => r.json())
         .then((data) => setCourses(data.courses || []))
         .catch(() => setCourses([]));
-      setSelectedCourse("");
       setYearSemStructure(null);
+      setSelectedCourse("");
+      setSelectedCourseCode("");
     }
   }, [selectedBoard]);
 
@@ -238,6 +240,7 @@ const BookUploadForm = ({ onClose, onSuccess }) => {
           board: boardType === "board_related" ? selectedBoard : "Others",
           book_name: finalTitle,
           course_name: selectedCourse || "General",
+          course_code: selectedCourseCode || null,
           level:
             boards.find((b) => b.name === selectedBoard)?.type ||
             "undergraduate",
@@ -529,12 +532,24 @@ const BookUploadForm = ({ onClose, onSuccess }) => {
                   <label>Course / Program</label>
                   <select
                     value={selectedCourse}
-                    onChange={(e) => setSelectedCourse(e.target.value)}
+                    onChange={(e) => {
+                      const courseName = e.target.value;
+                      setSelectedCourse(courseName);
+                      // Find the selected course object to get its code
+                      const courseObj = courses.find(
+                        (c) => c.name === courseName,
+                      );
+                      if (courseObj) {
+                        setSelectedCourseCode(courseObj.code || "");
+                      } else {
+                        setSelectedCourseCode("");
+                      }
+                    }}
                   >
                     <option value="">-- Choose Course --</option>
                     {courses.map((c) => (
-                      <option key={c} value={c}>
-                        {c}
+                      <option key={c.name || c} value={c.name || c}>
+                        {c.name || c}
                       </option>
                     ))}
                   </select>
@@ -585,25 +600,44 @@ const BookUploadForm = ({ onClose, onSuccess }) => {
                           <div className={styles.formGroup}>
                             <label>Semester / Part</label>
                             <select
-                              value={selectedSemester}
-                              onChange={(e) =>
-                                setSelectedSemester(e.target.value)
-                              }
+                              value={selectedSemester || selectedPart || ""}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                if (!val) {
+                                  setSelectedSemester("");
+                                  setSelectedPart("");
+                                } else if (!isNaN(val)) {
+                                  setSelectedSemester(val);
+                                  setSelectedPart("");
+                                } else {
+                                  setSelectedSemester("");
+                                  setSelectedPart(val);
+                                }
+                              }}
                             >
                               <option value="">-- Select --</option>
-                              {yearSemStructure.data[
-                                selectedYear
-                              ].semesters?.map((s) => (
-                                <option key={s} value={s}>
-                                  Semester {s}
-                                </option>
-                              ))}
-                              {yearSemStructure.data[selectedYear].parts?.map(
-                                (p) => (
-                                  <option key={p} value={p}>
-                                    Part {p}
-                                  </option>
-                                ),
+                              {yearSemStructure.data[selectedYear]
+                                .semesters && (
+                                <optgroup label="Semesters">
+                                  {yearSemStructure.data[
+                                    selectedYear
+                                  ].semesters.map((s) => (
+                                    <option key={s} value={s}>
+                                      Semester {s}
+                                    </option>
+                                  ))}
+                                </optgroup>
+                              )}
+                              {yearSemStructure.data[selectedYear].parts && (
+                                <optgroup label="Parts">
+                                  {yearSemStructure.data[
+                                    selectedYear
+                                  ].parts.map((p) => (
+                                    <option key={p} value={p}>
+                                      Part {p}
+                                    </option>
+                                  ))}
+                                </optgroup>
                               )}
                             </select>
                           </div>
