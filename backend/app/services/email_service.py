@@ -55,6 +55,29 @@ def verify_code(email: str, code: str, consume: bool = True) -> bool:
     return True
 
 
+def get_smtp_connection(timeout: int = 30):
+    """Create a secured SMTP connection based on configuration."""
+    host = settings.EMAIL_HOST
+    port = settings.EMAIL_PORT
+    
+    # Force IPv4 to avoid Network unreachable errors on some cloud providers
+    try:
+        host_info = socket.getaddrinfo(host, port, socket.AF_INET, socket.SOCK_STREAM)[0]
+        resolved_host = host_info[4][0]
+    except Exception as e:
+        print(f"Warning: DNS resolution failed, using host string: {e}")
+        resolved_host = host
+
+    if port == 465:
+        # Port 465 uses Implicit SSL
+        return smtplib.SMTP_SSL(resolved_host, port, timeout=timeout)
+    else:
+        # Other ports (like 587) use STARTTLS
+        smtp = smtplib.SMTP(resolved_host, port, timeout=timeout)
+        smtp.starttls()
+        return smtp
+
+
 def send_verification_email(to_email: str, code: str, full_name: str = "User") -> bool:
     """
     Send verification code email using Gmail SMTP.
@@ -89,10 +112,8 @@ The Adhyaan Team
         msg["From"] = f"{settings.EMAIL_FROM_NAME} <{settings.EMAIL_FROM}>"
         msg["To"] = to_email
         
-        # Send email using Gmail SMTP
-        # Use simple SMTP with STARTTLS for broader compatibility
-        with smtplib.SMTP(settings.EMAIL_HOST, 465) as smtp:
-            smtp.starttls()
+        # Send email using configured SMTP
+        with get_smtp_connection() as smtp:
             smtp.login(settings.EMAIL_USER, settings.EMAIL_PASSWORD)
             smtp.send_message(msg)
         
@@ -129,8 +150,7 @@ The Adhyaan Team
         msg["From"] = f"{settings.EMAIL_FROM_NAME} <{settings.EMAIL_FROM}>"
         msg["To"] = to_email
         
-        with smtplib.SMTP(settings.EMAIL_HOST, 465) as smtp:
-            smtp.starttls()
+        with get_smtp_connection() as smtp:
             smtp.login(settings.EMAIL_USER, settings.EMAIL_PASSWORD)
             smtp.send_message(msg)
         
@@ -185,18 +205,9 @@ The Adhyaan Team
         msg["From"] = f"{settings.EMAIL_FROM_NAME} <{settings.EMAIL_FROM}>"
         msg["To"] = to_email
         
-        print(f"Connecting to SMTP: {settings.EMAIL_HOST}:465")
         try:
-            # Force IPv4 to avoid Network unreachable errors
-            host_info = socket.getaddrinfo(settings.EMAIL_HOST, 465, socket.AF_INET, socket.SOCK_STREAM)[0]
-            host_ip = host_info[4][0]
-            print(f"Resolved SMTP Host IP: {host_ip}")
-
-            with smtplib.SMTP(host_ip, 465, timeout=30) as smtp:
+            with get_smtp_connection() as smtp:
                 smtp.set_debuglevel(1)  # Enable debug output
-                smtp.ehlo() # Identify ourselves
-                smtp.starttls() # Secure the connection
-                smtp.ehlo() # Re-identify as encrypted
                 print("Logging in to SMTP...")
                 smtp.login(settings.EMAIL_USER, settings.EMAIL_PASSWORD)
                 print("Sending message...")
