@@ -58,41 +58,40 @@ def verify_code(email: str, code: str, consume: bool = True) -> bool:
 def get_smtp_connection(timeout: int = 15):
     """
     Create a secured SMTP connection.
-    Tries Port 465 (SSL) first, falls back to 587 (STARTTLS) if blocked.
+    Tries Port 465 (SSL) first, falls back to 587 (STARTTLS).
+    Forces IPv4 to avoid network unreachable errors on Railway/cloud.
     """
     host = settings.EMAIL_HOST
     
-    # Try Port 465 (SSL) first
+    # 1. Try Port 465 (Implicit SSL) - Forced IPv4
     try:
-        # We try resolving to IPv4 specifically because many cloud environments 
-        # have broken IPv6 which causes "Network unreachable" or long delays.
         addr_info = socket.getaddrinfo(host, 465, socket.AF_INET, socket.SOCK_STREAM)
         ip_address = addr_info[0][4][0]
-        
         print(f"Connecting to SMTP (SSL) at {ip_address}:465...")
         return smtplib.SMTP_SSL(ip_address, 465, timeout=timeout)
     except Exception as e:
-        print(f"Port 465 failed ({type(e).__name__}): {e}")
-        print("Attempting fallback to Port 587 (STARTTLS)...")
-        
-        try:
-            # Fallback to Port 587 (Standard for many cloud providers)
-            # We use the hostname directly here to let it try standard resolution
-            smtp = smtplib.SMTP(host, 587, timeout=timeout)
-            smtp.starttls()
-            return smtp
-        except Exception as e2:
-            print(f"Port 587 also failed: {e2}")
-            # Final attempt: direct IP on 587
-            try:
-                addr_info = socket.getaddrinfo(host, 587, socket.AF_INET, socket.SOCK_STREAM)
-                ip_address = addr_info[0][4][0]
-                smtp = smtplib.SMTP(ip_address, 587, timeout=timeout)
-                smtp.starttls()
-                return smtp
-            except Exception as e3:
-                print(f"All SMTP connection attempts failed: {e3}")
-                raise e2 # Raise the 587 error
+        print(f"Port 465 IPv4 failed: {e}")
+
+    # 2. Try Port 587 (STARTTLS) - Forced IPv4
+    try:
+        addr_info = socket.getaddrinfo(host, 587, socket.AF_INET, socket.SOCK_STREAM)
+        ip_address = addr_info[0][4][0]
+        print(f"Connecting to SMTP (STARTTLS) at {ip_address}:587...")
+        smtp = smtplib.SMTP(ip_address, 587, timeout=timeout)
+        smtp.starttls()
+        return smtp
+    except Exception as e:
+        print(f"Port 587 IPv4 failed: {e}")
+
+    # 3. Final Fallback: Let the system handle resolution (try hostname directly)
+    print("Final attempt: letting system resolve hostname directly to port 587...")
+    try:
+        smtp = smtplib.SMTP(host, 587, timeout=timeout)
+        smtp.starttls()
+        return smtp
+    except Exception as e:
+        print(f"Final SMTP attempt failed: {e}")
+        raise e
 
 
 def send_verification_email(to_email: str, code: str, full_name: str = "User") -> bool:
