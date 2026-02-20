@@ -82,7 +82,9 @@ venv.bak/
 *.sqlite3
 
 # ==============================
-# IDE
+# Gmail API (NEVER COMMIT)
 # ==============================
+credentials.json
+token.pickle
 .vscode/
 .idea/

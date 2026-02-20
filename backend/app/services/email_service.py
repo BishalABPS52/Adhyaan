@@ -1,16 +1,93 @@
-"""Email service for sending verification codes and notifications."""
-import smtplib
+"""Email service for sending verification codes and notifications via Gmail API."""
 import random
 import string
-import socket
+import base64
+import pickle
+import os
+import json
 from email.message import EmailMessage
 from datetime import datetime, timedelta
 from typing import Dict, Optional
 from app.core.config import settings
 
+# Gmail API imports
+from googleapiclient.discovery import build
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+
 
 # In-memory storage for verification codes (use Redis in production)
 verification_codes: Dict[str, Dict] = {}
+
+# Gmail API service (initialized once)
+_gmail_service = None
+
+
+def _get_gmail_service():
+    """Get or create Gmail API service using environment variable or token file."""
+    global _gmail_service
+    if _gmail_service is not None:
+        return _gmail_service
+
+    creds = None
+    
+    # 1. Try to load from environment variable (Best for Railway/Production)
+    gmail_token_base64 = os.getenv('GMAIL_TOKEN_BASE64')
+    if gmail_token_base64:
+        try:
+            print("Loading Gmail API credentials from environment variable...")
+            token_data = base64.b64decode(gmail_token_base64)
+            creds = pickle.loads(token_data)
+        except Exception as e:
+            print(f"Error decoding GMAIL_TOKEN_BASE64: {e}")
+
+    # 2. Fallback to local token.pickle (Best for Local Development)
+    if not creds:
+        token_path = os.path.join(os.path.dirname(__file__), '../../token.pickle')
+        if os.path.exists(token_path):
+            print(f"Loading Gmail API credentials from {token_path}...")
+            with open(token_path, 'rb') as token_file:
+                creds = pickle.load(token_file)
+
+    if not creds:
+        raise FileNotFoundError(
+            "Gmail API credentials not found. Set GMAIL_TOKEN_BASE64 env var "
+            "or ensure token.pickle exists locally."
+        )
+
+    # Refresh token if expired
+    if creds and creds.expired and creds.refresh_token:
+        print("Refreshing expired Gmail API token...")
+        try:
+            creds.refresh(Request())
+            # If we loaded from a local file, update it
+            token_path = os.path.join(os.path.dirname(__file__), '../../token.pickle')
+            if os.path.exists(token_path):
+                with open(token_path, 'wb') as token_file:
+                    pickle.dump(creds, token_file)
+                print("Local token.pickle refreshed and saved.")
+        except Exception as e:
+            print(f"Error refreshing Gmail token: {e}")
+
+    _gmail_service = build('gmail', 'v1', credentials=creds)
+    print("Gmail API service initialized successfully.")
+    return _gmail_service
+
+
+def _send_email_via_api(msg: EmailMessage) -> bool:
+    """Send an EmailMessage using Gmail API."""
+    try:
+        service = _get_gmail_service()
+        encoded_msg = base64.urlsafe_b64encode(msg.as_bytes()).decode()
+        send_result = service.users().messages().send(
+            userId="me",
+            body={'raw': encoded_msg}
+        ).execute()
+        print(f"Email sent via Gmail API! Message ID: {send_result['id']}")
+        return True
+    except Exception as e:
+        print(f"Gmail API Error: {e}")
+        return False
 
 
 def generate_verification_code() -> str:
@@ -55,72 +132,9 @@ def verify_code(email: str, code: str, consume: bool = True) -> bool:
     return True
 
 
-def get_smtp_connection(timeout: int = 30):
-    """
-    Create a secured SMTP connection to Gmail.
-    Tries Port 587 (STARTTLS) first — recommended for Railway.
-    Falls back to Port 465 (SSL) if 587 fails.
-    """
-    host = settings.EMAIL_HOST
-
-    # 1. Try Port 587 (STARTTLS) — Railway recommended
-    try:
-        print(f"Connecting to SMTP (STARTTLS) {host}:587...")
-        smtp = smtplib.SMTP(host, 587, timeout=timeout)
-        smtp.ehlo()
-        smtp.starttls()
-        smtp.ehlo()
-        print("SMTP 587 connected successfully.")
-        return smtp
-    except Exception as e:
-        print(f"Port 587 hostname failed: {e}")
-
-    # 2. Try Port 587 with forced IPv4
-    try:
-        addr_info = socket.getaddrinfo(host, 587, socket.AF_INET, socket.SOCK_STREAM)
-        ip_address = addr_info[0][4][0]
-        print(f"Connecting to SMTP (STARTTLS) at {ip_address}:587 (IPv4)...")
-        smtp = smtplib.SMTP(ip_address, 587, timeout=timeout)
-        smtp.ehlo()
-        smtp.starttls()
-        smtp.ehlo()
-        print("SMTP 587 IPv4 connected successfully.")
-        return smtp
-    except Exception as e:
-        print(f"Port 587 IPv4 failed: {e}")
-
-    # 3. Fallback: Port 465 (Implicit SSL)
-    try:
-        print(f"Fallback: Connecting to SMTP (SSL) {host}:465...")
-        return smtplib.SMTP_SSL(host, 465, timeout=timeout)
-    except Exception as e:
-        print(f"Port 465 hostname failed: {e}")
-
-    # 4. Final: Port 465 with forced IPv4
-    try:
-        addr_info = socket.getaddrinfo(host, 465, socket.AF_INET, socket.SOCK_STREAM)
-        ip_address = addr_info[0][4][0]
-        print(f"Final attempt: SMTP SSL at {ip_address}:465 (IPv4)...")
-        return smtplib.SMTP_SSL(ip_address, 465, timeout=timeout)
-    except Exception as e:
-        print(f"All SMTP connection attempts failed: {e}")
-        raise e
-
-
 def send_verification_email(to_email: str, code: str, full_name: str = "User") -> bool:
-    """
-    Send verification code email using Gmail SMTP.
-    
-    Args:
-        to_email: Recipient email address
-        code: 6-digit verification code
-        full_name: User's full name
-        
-    Returns:
-        bool: True if email sent successfully, False otherwise
-    """
+    """Send verification code email using Gmail API."""
     try:
-        # Create email message
         msg = EmailMessage()
         msg.set_content(f"""
 Hello {full_name},
@@ -141,15 +155,10 @@ The Adhyaan Team
         msg["From"] = f"{settings.EMAIL_FROM_NAME} <{settings.EMAIL_FROM}>"
         msg["To"] = to_email
         
-        # Send email using configured SMTP
-        with get_smtp_connection() as smtp:
-            smtp.login(settings.EMAIL_USER, settings.EMAIL_PASSWORD)
-            smtp.send_message(msg)
-        
-        return True
+        return _send_email_via_api(msg)
     
     except Exception as e:
-        print(f"Error sending email: {e}")
+        print(f"Error sending verification email: {e}")
         return False
 
 
@@ -179,11 +188,7 @@ The Adhyaan Team
         msg["From"] = f"{settings.EMAIL_FROM_NAME} <{settings.EMAIL_FROM}>"
         msg["To"] = to_email
         
-        with get_smtp_connection() as smtp:
-            smtp.login(settings.EMAIL_USER, settings.EMAIL_PASSWORD)
-            smtp.send_message(msg)
-        
-        return True
+        return _send_email_via_api(msg)
     
     except Exception as e:
         print(f"Error sending welcome email: {e}")
@@ -191,22 +196,12 @@ The Adhyaan Team
 
 
 def resend_verification_code(email: str, full_name: str = "User") -> Optional[str]:
-    """
-    Resend verification code to the email.
-    
-    Returns:
-        str: New verification code if successful, None otherwise
-    """
-    # Generate new code
+    """Resend verification code to the email."""
     code = generate_verification_code()
-    
-    # Store it
     store_verification_code(email, code)
     
-    # Send email
     if send_verification_email(email, code, full_name):
         return code
-    
     return None
 
 
@@ -234,19 +229,10 @@ The Adhyaan Team
         msg["From"] = f"{settings.EMAIL_FROM_NAME} <{settings.EMAIL_FROM}>"
         msg["To"] = to_email
         
-        try:
-            with get_smtp_connection() as smtp:
-                smtp.set_debuglevel(1)  # Enable debug output
-                print("Logging in to SMTP...")
-                smtp.login(settings.EMAIL_USER, settings.EMAIL_PASSWORD)
-                print("Sending message...")
-                smtp.send_message(msg)
-        except Exception as smtp_err:
-             print(f"SMTP Error: {smtp_err}")
-             raise smtp_err
-        
-        print(f"Password reset email sent successfully to: {to_email}")
-        return True
+        success = _send_email_via_api(msg)
+        if success:
+            print(f"Password reset email sent successfully to: {to_email}")
+        return success
     
     except Exception as e:
         print(f"Error sending password reset email: {e}")
