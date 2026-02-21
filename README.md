@@ -1,7 +1,7 @@
 # Adhyaan – Study and Learn
 
 <p align="center">
-  <img src="images/adhyaan_logo.png" alt="Adhyaan Logo" width="200"/>
+  <img src="images/adhyaan.png" alt="Adhyaan Logo" width="200"/>
 </p>
 
 <p align="center">
