@@ -1,27 +1,63 @@
 # Adhyaan – Study and Learn
 
-Live at: https://adhyaan.vercel.app
+<p align="center">
+  <img src="images/adhyaan_logo.png" alt="Adhyaan Logo" width="200"/>
+</p>
+
+<p align="center">
+  <strong>A Digital Library and E-Learning Platform for Nepal</strong>
+</p>
+
+<p align="center">
+  🌐 Live at: <a href="https://adhyaan.vercel.app">https://adhyaan.vercel.app</a>
+</p>
 
 ---
 
 ## About
 
-Adhyaan is a digital library and e-learning platform built specifically for Students and Readers. It gives students and readers a single place to access both academic books  organized by board, course, year, semester, and subject — and indie books organized by genre and author. Authors can publish and manage their own content.
+Adhyaan is a digital library and e-learning platform built specifically for Students and Readers. It gives students and readers a single place to access both academic books organized by board, course, year, semester, and subject — and indie books organized by genre and author. Authors can publish and manage their own content.
+
+---
+
+## Screenshots
+
+### Home
+![Home Page](images/home.png)
+
+### Student Section – Board Selection
+![Student Section](images/student-section.png)
+
+### Student Search Section
+![Student Search](images/student-search.png)
+
+### Reader's Section
+![Reader's Section](images/readers-section.png)
+
+### Reader Search Section
+![Reader Search](images/reader-search.png)
+
+### All Books
+![All Books](images/all-books.png)
+
+### Indie Books
+![Indie Books](images/indie-books.png)
+
+### Search
+![Search](images/search.png)
 
 ---
 
 ## Key Features
 
 ### For Students and Readers
-
 - Browse academic books by board, course, year, semester, and subject
 - Browse indie books by genre and author
 - Read books directly in the browser with a built-in PDF viewer
 - Search across all content by title, subject, or author
 
 ### For Authors
-
-- Upload academic or indie books in PDF or DOCX format with cover image.
+- Upload academic or indie books in PDF or DOCX format with cover image
 - Dashboard view with total books, readers, ratings, and reviews
 
 ---
@@ -35,6 +71,34 @@ Adhyaan is a digital library and e-learning platform built specifically for Stud
 | Database | PostgreSQL | Supabase |
 | File Storage | Vercel Blob | Vercel |
 | Email | Gmail API | Google Cloud Console |
+
+---
+
+## Project Structure
+
+```
+bishalabps52-adhyaan/
+├── backend/
+│   ├── app/
+│   │   ├── api/v1/          # Route handlers (auth, books, author, admin)
+│   │   ├── core/            # Config, database, security
+│   │   ├── db/repositories/ # Data access layer
+│   │   ├── schemas/         # Pydantic models
+│   │   ├── services/        # Business logic (auth, email)
+│   │   └── utils/           # File upload, Vercel Blob
+│   └── scripts/             # DB migrations and seed data
+└── frontend/
+    └── src/
+        ├── app/
+        │   ├── (public)/    # Landing page
+        │   ├── (student)/   # Home, books, search, student section
+        │   ├── (author)/    # Author dashboard
+        │   ├── admin/       # Admin panel
+        │   └── auth/        # Login, register, reset password
+        ├── components/      # BookCard, PDFViewer, Navbar, etc.
+        ├── hooks/           # useAuth, useRole, useTheme
+        └── services/        # API service layer
+```
 
 ---
 
