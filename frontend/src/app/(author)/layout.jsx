@@ -17,6 +17,7 @@ export default function AuthorLayout({ children }) {
         const ALLOWED_AUTHOR_EMAILS = [
           "bs426808@gmail.com",
           "abps512bishal@gmail.com",
+          "aayushma5206@gmail.com",
         ];
         if (!ALLOWED_AUTHOR_EMAILS.includes(user.email)) {
           router.push("/home");
