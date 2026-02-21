@@ -19,6 +19,7 @@ const ReaderNavbar = () => {
     "bs426808@gmail.com",
     "abps512bishal@gmail.com",
     "aayushma5206@gmail.com",
+    "shswtsharma@gmail.com",
   ];
 
   const canSwitchToAuthor = user && ALLOWED_AUTHOR_EMAILS.includes(user.email);
