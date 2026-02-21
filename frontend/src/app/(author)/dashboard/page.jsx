@@ -278,7 +278,7 @@ export default function AuthorDashboard() {
             </div>
           </div>
 
-          <Link href="/author/analytics" className={styles.actionCard}>
+          <Link href="/dashboard" className={styles.actionCard}>
             <div className={styles.actionIcon}>
               <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -295,7 +295,7 @@ export default function AuthorDashboard() {
             </div>
           </Link>
 
-          <Link href="/author/profile" className={styles.actionCard}>
+          <Link href="/profile" className={styles.actionCard}>
             <div className={styles.actionIcon}>
               <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
