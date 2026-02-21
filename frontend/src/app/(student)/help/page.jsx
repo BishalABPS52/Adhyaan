@@ -25,13 +25,13 @@ export default function Help() {
       id: 3,
       category: 'Account',
       question: 'Can I switch between Student and Author roles?',
-      answer: 'Yes! You can switch between Student/Reader and Author roles anytime from your dashboard without logging out. Just click on your profile dropdown and select "Switch to Author" or "Switch to Student/Reader".'
+      answer: 'Yes! You can switch between Student/Reader and Author roles anytime from your dashboard without logging out. Just click on your profile dropdown and select "Switch to Author" or "Switch to Student/Reader" but currently this feature isn'/'t availaible.'
     },
     {
       id: 4,
       category: 'Books',
       question: 'How do I search for books?',
-      answer: 'Use the search bar at the top of the page or navigate to Reader Section or Student Section. You can filter books by genre, popularity, publication year (Reader Section) or by level, class, and board (Student Section).'
+      answer: 'Use the search options at the top of the page for desktop and Click Options for mobile or navigate to Reader Section or Student Section. You can filter books by genre, popularity, publication year (Reader Section) or by level, class, and board (Student Section).'
     },
     {
       id: 5,
@@ -55,7 +55,7 @@ export default function Help() {
       id: 8,
       category: 'Community',
       question: 'How does the Community section work?',
-      answer: 'The Community section is a Q&A platform where you can ask questions, provide answers, and help fellow students. Post your questions with relevant categories, and other users can respond with their insights and solutions.'
+      answer: 'The Community section is a Q&A platform where you can ask questions, provide answers, and help fellow students. Post your questions with relevant categories, and other users can respond with their insights and solutions.This feature is currently under development and will be available soon.'
     },
     {
       id: 9,
@@ -79,7 +79,7 @@ export default function Help() {
       id: 12,
       category: 'Privacy',
       question: 'Is my data secure on Adhyaan?',
-      answer: 'Yes, we take data security seriously. All user data is encrypted and stored securely. We do not share your personal information with third parties without your consent. Read our Privacy Policy for more details.'
+      answer: 'Yes, we take data security seriously. All user data is stored securely. We do not share your personal information with third parties without your consent. Read our Privacy Policy for more details.'
     },
   ];
 
@@ -186,15 +186,6 @@ export default function Help() {
               <div>
                 <h4>Email Support</h4>
                 <p>support@adhyaan.com</p>
-              </div>
-            </div>
-            <div className={styles.supportOption}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-              </svg>
-              <div>
-                <h4>Live Chat</h4>
-                <p>Available 9 AM - 6 PM</p>
               </div>
             </div>
           </div>
