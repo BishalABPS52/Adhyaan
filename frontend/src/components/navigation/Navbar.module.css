@@ -336,13 +336,41 @@
   .searchBar {
     display: none;
   }
-  
+
+  .navContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    flex-wrap: nowrap;
+  }
+
+  .logo {
+    flex-shrink: 0;
+    gap: 0;
+  }
+
+   .logo img {
+    width: 200px !important;
+    height: 200px !important;
+  }
+
+  .logoText {
+    font-size: 2rem;
+    margin-left: 0;
+    padding-left: 0;
+  }
+
   .navActions {
-    display: none;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-shrink: 1;
+    margin-left: auto;
   }
   
   .mobileMenuBtn {
-    display: block;
+    display: none;
   }
   
   .mobileMenu {

@@ -15,8 +15,8 @@ const PublicNavbar = () => {
           <Image 
             src="/logo/adhyaan.png" 
             alt="Adhyaan Logo" 
-            width={90} 
-            height={90}
+            width={200} 
+            height={200}
             style={{ objectFit: 'contain' }}
             priority
           />
