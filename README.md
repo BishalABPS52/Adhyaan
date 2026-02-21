@@ -85,9 +85,9 @@ bishalabps52-adhyaan/
 │   ├── app/
 │   │   ├── api/v1/          # Route handlers (auth, books, author, admin)
 │   │   ├── core/            # Config, database, security
-│   │   ├── db/repositories/ # Data access layer
+│   │   ├── db/repositories/ # Database repositories
 │   │   ├── schemas/         # Pydantic models
-│   │   ├── services/        # Business logic (auth, email)
+│   │   ├── services/        # Auth and Services logic (auth, email)
 │   │   └── utils/           # File upload, Vercel Blob
 │   └── scripts/             # DB migrations and seed data
 └── frontend/
