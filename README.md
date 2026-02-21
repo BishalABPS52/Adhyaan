@@ -21,9 +21,8 @@ Adhyaan is a digital library and e-learning platform built specifically for Stud
 
 ### For Authors
 
-- Upload academic or indie books in PDF or DOCX format
-- Upload custom cover images
-- View a dashboard with total books, readers, ratings, and reviews
+- Upload academic or indie books in PDF or DOCX format with cover image.
+- Dashboard view with total books, readers, ratings, and reviews
 
 ---
 
