@@ -158,7 +158,7 @@ const Footer = () => {
               Bishal Shrestha
             </a>
           </p>
-          <p className={styles.copyright}>© {currentYear} adhyaan</p>
+          <p className={styles.copyright}> Adhyaan - Study & Learn</p>
         </div>
       </div>
     </footer>

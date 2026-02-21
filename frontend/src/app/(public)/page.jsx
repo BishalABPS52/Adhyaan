@@ -34,7 +34,7 @@ export default function HomePage() {
       try {
         const [booksData, authorsData] = await Promise.all([
           apiService.get("/books/?limit=6"),
-          apiService.get("/users/featured-authors?limit=3"),
+          apiService.get("/users/featured-authors?limit=4"),
         ]);
         setFeaturedBooks(booksData.books || []);
         setFeaturedAuthors(authorsData.authors || []);
