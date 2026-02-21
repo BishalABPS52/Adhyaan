@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  🌐 Live at: <a href="https://adhyaan.vercel.app">https://adhyaan.vercel.app</a>
+  Live at: <a href="https://adhyaan.vercel.app">https://adhyaan.vercel.app</a>
 </p>
 
 ---
@@ -22,30 +22,32 @@ Adhyaan is a digital library and e-learning platform built specifically for Stud
 
 ## Screenshots
 
-### Home
-![Home Page](images/home.png)
+### Landing Page
+![Landing Page](images/landingpage.png)
 
-### Student Section – Board Selection
-![Student Section](images/student-section.png)
-
-### Student Search Section
-![Student Search](images/student-search.png)
-
-### Reader's Section
+### Home Page
 ![Reader's Section](images/readers-section.png)
 
-### Reader Search Section
-![Reader Search](images/reader-search.png)
+### Author Dashboard
+![Home Page](images/home.png)
 
-### All Books
+### Student Section 
+![Student Section](images/student-section.png)
+
+### Reader's Section
 ![All Books](images/all-books.png)
 
-### Indie Books
+### All Books
 ![Indie Books](images/indie-books.png)
 
 ### Search
 ![Search](images/search.png)
 
+### Reader Search Section
+![Reader Search](images/reader-search.png)
+
+### Student Search Section
+![Student Search](images/student-search.png)
 ---
 
 ## Key Features
