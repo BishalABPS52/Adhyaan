@@ -1,11 +1,12 @@
-# Adhyaan – Study and Learn
+
 
 <p align="center">
   <img src="images/adhyaan.png" alt="Adhyaan Logo" width="200"/>
 </p>
 
 <p align="center">
-  <strong>A Digital Library and E-Learning Platform for Nepal</strong>
+  <strong>Adhyaan – Study and Learn</strong><br>
+  A Digital and e-Learning Platform 
 </p>
 
 <p align="center">
