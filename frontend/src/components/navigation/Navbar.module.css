@@ -321,14 +321,50 @@
   background: var(--bg-primary);
 }
 
-/* Responsive */
 @media (max-width: 1024px) {
   .navLinks {
     display: none;
   }
-  
+
   .searchBar {
-    max-width: 250px;
+    display: none;
+  }
+
+  .navContainer {
+    justify-content: space-between;
+  }
+
+  .logo {
+    flex: 1;
+  }
+
+  .logo img {
+    width: 120px !important;
+    height: 120px !important;
+  }
+
+  .logoText {
+    display: block;
+  }
+
+  .navActions {
+    display: flex;
+    align-items: center;
+    gap: 1px;           
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  .profileDropdown {
+    display: none;
+  }
+
+  .mobileMenuBtn {
+    display: flex;
+  }
+
+  .mobileMenu {
+    display: flex;
   }
 }
 
@@ -338,50 +374,41 @@
   }
 
   .navContainer {
-    display: flex;
-    align-items: center;
     justify-content: space-between;
-    gap: var(--spacing-sm);
-    flex-wrap: nowrap;
   }
 
   .logo {
-    flex-shrink: 0;
-    gap: 0;
+    flex: 1;
   }
 
-   .logo img {
-    width: 200px !important;
-    height: 200px !important;
+  .logo img {
+    width: 120px !important;
+    height: 120px !important;
   }
 
   .logoText {
-    font-size: 2rem;
-    margin-left: 0;
-    padding-left: 0;
+    display: none;
   }
 
   .navActions {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
-    flex-shrink: 1;
+    gap: 1px;        
+    flex-shrink: 0;
     margin-left: auto;
   }
-  
-  .mobileMenuBtn {
+
+  .profileDropdown {
     display: none;
   }
-  
+
+  .mobileMenuBtn {
+    display: flex;
+  }
+
   .mobileMenu {
     display: flex;
   }
-}
-
-.bookCountContainer {
-  position: relative;
-  display: flex;
-  align-items: center;
 }
 
 .navActionBtn {

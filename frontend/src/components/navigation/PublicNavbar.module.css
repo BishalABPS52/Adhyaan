@@ -1,0 +1,123 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: var(--spacing-lg) 0;
+  z-index: 100;
+  transition: all var(--transition-normal);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+}
+
+.navContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+}
+
+/* ── Logo ── */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--primary-blue);
+  transition: all var(--transition-normal);
+  position: relative;
+}
+
+.logo:hover {
+  transform: translateY(-2px);
+}
+
+.logo:hover .logoText {
+  background: linear-gradient(135deg, var(--primary-blue), var(--accent-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.logoText {
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--primary-blue);
+  transition: all var(--transition-normal);
+  letter-spacing: -0.5px;
+}
+
+/* ── Search bar ── */
+.searchBar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  max-width: 400px;
+  width: 100%;
+}
+
+.searchBar svg {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.searchInput {
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.searchInput:focus {
+  outline: none;
+}
+
+/* ── Nav actions (ThemeToggle + button) ── */
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-left: auto;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .searchBar {
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .searchBar {
+    display: none;
+  }
+
+  .navContainer {
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    flex-wrap: nowrap;
+  }
+
+  .logo {
+    flex-shrink: 1;
+    gap: 0;
+  }
+
+  .logo img {
+    width: 200px !important;
+    height: 200px !important;
+  }
+
+  .logoText {
+    display:none;
+  }
+
+  .navActions {
+    flex-shrink: 1;
+  }
+}

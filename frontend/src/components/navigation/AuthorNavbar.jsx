@@ -9,7 +9,6 @@ import { useRole } from "@/hooks/useRole";
 import ThemeToggle from "../theme/ThemeToggle";
 import styles from "./Navbar.module.css";
 
-import BookCount from "./BookCount";
 
 const AuthorNavbar = () => {
   const router = useRouter();
@@ -65,8 +64,6 @@ const AuthorNavbar = () => {
 
         <div className={styles.navActions}>
           <ThemeToggle />
-
-          <BookCount />
 
           <div className={styles.profileDropdown}>
             <button
