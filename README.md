@@ -226,15 +226,15 @@ flowchart TD
 git clone https://github.com/BishalABPS52/Adhyaan.git
 
 ### -Frontend
-cd frontend
-npm install
-npm run dev
+- cd frontend
+- npm install
+- npm run dev
 #### Runs on http://localhost:3000
 
 ### -Backend
-cd backend
-pip install -r requirements.txt
-uvicorn main:app --reload
+- cd backend
+- pip install -r requirements.txt
+- uvicorn main:app --reload
 #### Runs on http://localhost:8000
 
 ---
