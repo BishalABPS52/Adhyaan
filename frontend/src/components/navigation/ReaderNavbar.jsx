@@ -152,6 +152,13 @@ const ReaderNavbar = () => {
           >
             Home
           </Link>
+           <Link
+            href="/books"
+            className={styles.mobileLink}
+            onClick={toggleMobileMenu}
+          >
+            Books
+          </Link>
           <Link
             href="/search"
             className={styles.mobileLink}
