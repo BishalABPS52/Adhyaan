@@ -113,6 +113,98 @@ Users can switch between student and author modes from their profile without nee
 
 ---
 
+---
+
+## System Flow
+```mermaid
+flowchart TD
+    A[Landing Page] --> B[Login / Signup]
+
+    B --> C{User Role}
+
+    C --> D[Author Dashboard]
+    C --> E[Student & Reader Homepage]
+
+    D --> D1[View Uploaded Books]
+    D --> D2[Upload Book]
+    D --> D5[Delete Book]
+    D2 --> D3[Academic Book]
+    D2 --> D4[Indie Book]
+
+    E --> F[Menu]
+    F --> G[Home]
+    F --> H[Search]
+    F --> I[Books]
+
+    H --> H1[Search Overall]
+    H --> H2[Search Reader Section]
+    H --> H3[Search Student Section]
+    H1 --> L
+    H2 --> L
+    H3 --> L
+
+    I --> I1[Academic Books]
+    I --> I2[Indie Books]
+
+    E --> J[Reader Section]
+    E --> K[Student Section]
+
+    J --> J1[Browse by Genre]
+    J1 --> L[Open Book]
+
+    K --> K1[Browse by Board]
+    K --> K2[Browse by Course]
+    K2 --> K3[Semester - Year - Part]
+    K1 --> L
+    K3 --> L
+    I1 --> L
+    I2 --> L
+
+    L --> M[Read Book]
+    M --> N[Mark as Completed]
+    M --> O[Rate the Book]
+
+    E --> P[Profile Icon]
+    P --> D
+
+    style A fill:#4F46E5,color:#fff,stroke:none
+    style B fill:#7C3AED,color:#fff,stroke:none
+    style C fill:#1F2937,color:#fff,stroke:none
+    style D fill:#065F46,color:#fff,stroke:none
+    style D1 fill:#064E3B,color:#fff,stroke:none
+    style D2 fill:#064E3B,color:#fff,stroke:none
+    style D3 fill:#047857,color:#fff,stroke:none
+    style D4 fill:#047857,color:#fff,stroke:none
+    style D5 fill:#991B1B,color:#fff,stroke:none
+    style E fill:#1D4ED8,color:#fff,stroke:none
+    style F fill:#1E40AF,color:#fff,stroke:none
+    style G fill:#1E3A8A,color:#fff,stroke:none
+    style H fill:#0F766E,color:#fff,stroke:none
+    style H1 fill:#0D9488,color:#fff,stroke:none
+    style H2 fill:#0D9488,color:#fff,stroke:none
+    style H3 fill:#0D9488,color:#fff,stroke:none
+    style I fill:#0F766E,color:#fff,stroke:none
+    style I1 fill:#0E7490,color:#fff,stroke:none
+    style I2 fill:#0E7490,color:#fff,stroke:none
+    style J fill:#9D174D,color:#fff,stroke:none
+    style J1 fill:#831843,color:#fff,stroke:none
+    style K fill:#1E40AF,color:#fff,stroke:none
+    style K1 fill:#1E3A8A,color:#fff,stroke:none
+    style K2 fill:#1E3A8A,color:#fff,stroke:none
+    style K3 fill:#1E3A8A,color:#fff,stroke:none
+    style L fill:#92400E,color:#fff,stroke:none
+    style M fill:#78350F,color:#fff,stroke:none
+    style N fill:#3B0764,color:#fff,stroke:none
+    style O fill:#3B0764,color:#fff,stroke:none
+    style P fill:#374151,color:#fff,stroke:none
+```
+---
+
+### Database Tables ER Diagram (There may be Error) 
+![ER Diagram](images/erdiagram.png)
+
+---
+
 ## Coming Soon
 
 - Study Rooms – collaborative reading and discussion spaces for groups
@@ -121,7 +213,35 @@ Users can switch between student and author modes from their profile without nee
 
 ---
 
-### Database Tables ER Diagram (There may be Error) 
-![ER Diagram](images/erdiagram.png)
+## Getting Started
+
+### Prerequisites
+- Node.js 18+
+- Python 3.10+
+- PostgreSQL
+
+### Installation
+
+#### Clone the repo
+git clone https://github.com/BishalABPS52/Adhyaan.git
+
+### -Frontend
+cd frontend
+npm install
+npm run dev
+#### Runs on http://localhost:3000
+
+### -Backend
+cd backend
+pip install -r requirements.txt
+uvicorn main:app --reload
+#### Runs on http://localhost:8000
 
 ---
+
+## Developer
+
+### Built by [Bishal Shrestha](https://bishalshrestha52.com.np)
+
+[![GitHub](https://img.shields.io/badge/GitHub-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/BishalABPS52)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/bishal-shrestha-2b05b1302/)
