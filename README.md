@@ -127,5 +127,3 @@ Users can switch between student and author modes from their profile without nee
 ![ER Diagram](images/erdiagram.png)
 
 ---
-
-Built by [Bishal Shrestha](https://www.bishalshrestha52.com.np)
