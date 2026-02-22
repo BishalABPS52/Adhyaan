@@ -10,15 +10,17 @@ import { getApiBaseUrl } from '@/services/api';
 import styles from './page.module.css';
 
 export default function ReaderSearchSection() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedGenre, setSelectedGenre] = useState('all');
+  const [searchQuery, setSearchQuery]       = useState('');
+  const [debouncedQuery, setDebouncedQuery] = useState(''); // delayed copy of searchQuery
+  const [selectedGenre, setSelectedGenre]   = useState('all');
   const [selectedLanguage, setSelectedLanguage] = useState('all');
-  const [books, setBooks] = useState([]);
+  const [books, setBooks]     = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const genres = ['All', 'Fiction', 'Non-Fiction', 'Romance', 'Mystery', 'Sci-Fi', 'Fantasy', 'Thriller', 'Biography'];
+  const genres    = ['All', 'Fiction', 'Non-Fiction', 'Romance', 'Mystery', 'Sci-Fi', 'Fantasy', 'Thriller', 'Biography'];
   const languages = ['All', 'English', 'Hindi', 'Nepali', 'Spanish', 'French'];
 
+  // exactly the same fetch as the original — nothing changed here
   useEffect(() => {
     fetchBooks();
   }, []);
@@ -38,14 +40,26 @@ export default function ReaderSearchSection() {
     }
   };
 
-  const filteredBooks = books.filter(book => {
-    const title = (book.book_name || book.title || '').toLowerCase();
-    const author = (book.author_name || '').toLowerCase();
-    const query = searchQuery.toLowerCase();
+  // debounce — waits 400ms after user stops typing then updates debouncedQuery
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(searchQuery);
+    }, 400);
 
-    const matchesSearch = title.includes(query) || author.includes(query);
-    const matchesGenre = selectedGenre === 'all' || (book.genre && book.genre.toLowerCase() === selectedGenre.toLowerCase());
+    return () => clearTimeout(timer); // cancel if user types again within 400ms
+  }, [searchQuery]);
+
+  // client-side filter using debouncedQuery — same logic as original
+  // but now only runs after 400ms pause instead of on every keystroke
+  const filteredBooks = books.filter(book => {
+    const title  = (book.book_name || book.title || '').toLowerCase();
+    const author = (book.author_name || '').toLowerCase();
+    const query  = debouncedQuery.toLowerCase();
+
+    const matchesSearch   = query === '' || title.includes(query) || author.includes(query);
+    const matchesGenre    = selectedGenre === 'all' || (book.genre && book.genre.toLowerCase() === selectedGenre.toLowerCase());
     const matchesLanguage = selectedLanguage === 'all' || (book.language && book.language.toLowerCase() === selectedLanguage.toLowerCase());
+
     return matchesSearch && matchesGenre && matchesLanguage;
   });
 
@@ -76,9 +90,9 @@ export default function ReaderSearchSection() {
           <div className={styles.filters}>
             <div className={styles.filterGroup}>
               <label>Genre</label>
-              <select 
-                value={selectedGenre} 
-                onChange={(e) => setSelectedGenre(e.target.value)} 
+              <select
+                value={selectedGenre}
+                onChange={(e) => setSelectedGenre(e.target.value)}
                 className={styles.select}
               >
                 {genres.map(genre => (
@@ -89,9 +103,9 @@ export default function ReaderSearchSection() {
 
             <div className={styles.filterGroup}>
               <label>Language</label>
-              <select 
-                value={selectedLanguage} 
-                onChange={(e) => setSelectedLanguage(e.target.value)} 
+              <select
+                value={selectedLanguage}
+                onChange={(e) => setSelectedLanguage(e.target.value)}
                 className={styles.select}
               >
                 {languages.map(language => (

@@ -43,34 +43,43 @@ export default function SearchPage() {
     }
   };
 
+  // CHANGED: just update state, debounce useEffect does the filtering
   const handleQuickSearchChange = (e) => {
     const query = e.target.value;
     setQuickSearchQuery(query);
 
-    if (query.trim().length > 0) {
-      setIsSearching(true);
-      // Filter books based on search query
-      const filtered = allBooks.filter(book => {
-        const title = book.book_name || book.title || '';
-        const author = book.author_name || book.author || '';
-        const genre = book.genre || '';
-        const subject = book.subject_name || book.subject || '';
-        
-        return title.toLowerCase().includes(query.toLowerCase()) ||
-               author.toLowerCase().includes(query.toLowerCase()) ||
-               genre.toLowerCase().includes(query.toLowerCase()) ||
-               subject.toLowerCase().includes(query.toLowerCase());
-      });
-      setSearchResults(filtered);
-    } else {
+    if (query.trim().length === 0) {
       setSearchResults([]);
       setIsSearching(false);
     }
   };
 
+  // ADDED: debounce — waits 400ms after user stops typing before filtering
+  useEffect(() => {
+    if (!quickSearchQuery.trim() || quickSearchQuery.trim().length < 2) return;
+
+    const timer = setTimeout(() => {
+      setIsSearching(true);
+      const filtered = allBooks.filter(book => {
+        const title   = (book.book_name   || book.title   || '').toLowerCase();
+        const author  = (book.author_name || book.author  || '').toLowerCase();
+        const genre   = (book.genre       || '').toLowerCase();
+        const subject = (book.subject_name|| book.subject || '').toLowerCase();
+        const query   = quickSearchQuery.toLowerCase();
+
+        return title.includes(query)   ||
+               author.includes(query)  ||
+               genre.includes(query)   ||
+               subject.includes(query);
+      });
+      setSearchResults(filtered);
+    }, 400);
+
+    return () => clearTimeout(timer); // cancel if user types again within 400ms
+  }, [quickSearchQuery, allBooks]);
+
   const handleQuickSearch = (e) => {
     if (e.key === 'Enter' && quickSearchQuery.trim()) {
-      // Keep showing results, don't navigate away
       setIsSearching(true);
     }
   };
