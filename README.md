@@ -69,13 +69,11 @@ Adhyaan is a digital library and e-learning platform built specifically for Stud
 
 | Layer | Technology | Hosted On |
 |---|---|---|
-| Frontend | ReactJS, Next.js, CSS Modules | Vercel |
-| Backend | Python, FastAPI | Railway |
-| Database | PostgreSQL | Supabase |
-| File Storage | Vercel Blob | Vercel |
-| Email | Gmail API | Google Cloud Console |
-
----
+| Frontend | <img src="https://img.shields.io/badge/React-%2361DAFB.svg?style=for-the-badge&logo=react&logoColor=black" height="30"> <img src="https://img.shields.io/badge/Next.js-black?style=for-the-badge&logo=next.js&logoColor=white" height="30"> <img src="https://img.shields.io/badge/Tailwind%20CSS-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white" height="30"> | <img src="https://img.shields.io/badge/Vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white" height="30"> |
+| Backend | <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" height="30"> <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" height="30"> | <img src="https://img.shields.io/badge/Railway-%230B0D0E.svg?style=for-the-badge&logo=railway&logoColor=white" height="30"> |
+| Database | <img src="https://img.shields.io/badge/PostgreSQL-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white" height="30"> | <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=black" height="30"> |
+| File Storage | <img src="https://img.shields.io/badge/Vercel%20Blob-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white" height="30"> | <img src="https://img.shields.io/badge/Vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white" height="30"> |
+| Email | <img src="https://img.shields.io/badge/Gmail%20API-EA4335?style=for-the-badge&logo=gmail&logoColor=white" height="30"> | <img src="https://img.shields.io/badge/Google%20Cloud-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white" height="30"> |
 
 ## Project Structure
 
