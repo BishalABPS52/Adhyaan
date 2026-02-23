@@ -108,6 +108,23 @@
   font-weight: 500;
 }
 
+/* Built By */
+.builtBy {
+  color: #1a4a8a;  
+  font-size: 0.875rem;              
+}
+
+.builtByLink {
+  font-family: 'Bulgatti', sans-serif;
+  color: #1a4d8f;                    
+  text-decoration: none;
+  transition: color 0.3s ease;       
+}
+
+.builtByLink:hover {
+  color: #4f74a5;                   
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .footer {
@@ -128,6 +145,10 @@
   .footerLinks {
     justify-content: center;
   }
+
+  .builtBy {
+    text-align: center;
+  }
 }
 
 @media (max-width: 480px) {
@@ -147,5 +168,9 @@
 
   .separator {
     display: none;
+  }
+
+  .builtBy {
+    text-align: center;
   }
 }

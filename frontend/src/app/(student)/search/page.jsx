@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Card from '@/components/ui/Card';
+import BookCard from '@/components/book/BookCard';
 import Button from '@/components/ui/Button';
 import { getApiBaseUrl } from '@/services/api';
 import styles from './page.module.css';

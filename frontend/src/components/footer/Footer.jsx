@@ -147,16 +147,16 @@ const Footer = () => {
           <div className={styles.footerLinks}>
             <Link href="/terms">Terms of Service</Link>
           </div>
-          <p className="text-[#ACBAC4]/70 text-sm">
+          <p className={styles.builtBy}>
             Built by{" "}
-            <a
-              href="https://www.bishalshrestha52.com.np/"
+    
+            <a href="https://www.bishalshrestha52.com.np/"
               target="_blank"
               rel="noopener noreferrer"
-              className="bulgatti-font text-[#E1D9BC] hover:text-[#F0F0DB] transition-colors duration-300"
+              className={styles.builtByLink}
             >
-              Bishal Shrestha
-            </a>
+           Bishal Shrestha
+           </a>
           </p>
           <p className={styles.copyright}> Adhyaan - Study & Learn</p>
         </div>
