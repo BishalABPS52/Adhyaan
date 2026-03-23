@@ -1,20 +1,15 @@
 /**
- * Vercel Blob Upload Service for Adhyaan Platform
- * 
+ * Vercel Blob Upload Service for Adhyaan 
+
  * ARCHITECTURE: Frontend → Backend → Vercel Blob → Database
- * 
+
  * This service handles document uploads to Vercel Blob storage through the backend API.
- * Documents are stored in cloud storage (NOT in the database) to ensure:
- * - Better performance and scalability
- * - Proper database normalization (DB stores metadata, cloud stores files)
- * - Efficient document delivery via CDN
- * - Unlimited storage capacity
- * 
+
  * The database stores only document URLs, not the files themselves.
  */
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://adhyaan.up.railway.app/api/v1";
+  process.env.NEXT_PUBLIC_API_URL || "https://adhyaan.onrender.com/api/v1";
 
 /**
  * Upload a document (PDF or DOCX) via backend to Vercel Blob
@@ -24,14 +19,8 @@ const API_BASE_URL =
  * 2. Backend uploads to Vercel Blob
  * 3. Backend returns blob URL
  * 4. Frontend uses URL to save book metadata
- * 
- * WHY THIS APPROACH?
- * - Files stored in cloud, NOT in database (proper normalization)
- * - Database stores only URLs for better performance
- * - CDN delivery ensures fast access worldwide
- * - Scalable - cloud handles unlimited files
- * - Secure - token never exposed to frontend
- * 
+
+
  * @param {File} file - The document file to upload (PDF or DOCX)
  * @param {string} folder - Folder name ('academic' or 'indie')
  * @param {Function} onProgress - Optional callback for upload progress (0-100)

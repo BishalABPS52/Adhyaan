@@ -11,7 +11,7 @@ router = APIRouter()
 async def get_boards(cursor = Depends(get_db_cursor)) -> List[Dict[str, Any]]:
     """
     Get available education boards.
-    For NEB, only return boards that have Grade 11 and 12 content.
+    For NEB, only Grade 11 and 12 content.
     """
     try:
         # Query to get distinct boards from academic_books where year is 11 or 12

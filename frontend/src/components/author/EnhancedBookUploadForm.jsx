@@ -204,7 +204,7 @@ const EnhancedBookUploadForm = ({ onClose, onSuccess }) => {
       const token = localStorage.getItem("token");
       const apiUrl =
         process.env.NEXT_PUBLIC_API_URL ||
-        "https://adhyaan.up.railway.app/api/v1";
+        "https://adhyaan.onrender.com/api/v1";
       let endpoint;
       let requestBody;
 

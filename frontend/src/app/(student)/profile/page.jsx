@@ -20,7 +20,7 @@ export default function ProfilePage() {
 
     const baseUrl =
       process.env.NEXT_PUBLIC_API_URL ||
-      "https://adhyaan.up.railway.app/api/v1";
+      "https://adhyaan.onrender.com/api/v1";
     const token =
       localStorage.getItem("adhyaan_token") || localStorage.getItem("token");
 

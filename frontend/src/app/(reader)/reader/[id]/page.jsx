@@ -8,12 +8,9 @@ import { ReaderPdfViewer } from "@/components/reader";
 import { getApiBaseUrl } from "@/services/api";
 import Avatar from "@/components/ui/Avatar";
 
-/**
- * Premium Reading Page with Dual UI Modes:
- * 1. General Reader View (Indie/Novels)
- * 2. Academic Student View (Structure & Metadata)
- *
- * Moved to (reader) group to fulfill route requirements while keeping the latest UI.
+/*
+  1. General Reader View (Indie/Novels)
+  2. Academic Student View (Structure & Metadata)
  */
 export default function BookReaderPage() {
   const params = useParams();

@@ -1,14 +1,10 @@
 """
 Vercel Blob Storage Service for Adhyaan Platform
 
-ARCHITECTURE: Frontend/Backend → Vercel Blob → Database
+ARCHITECTURE: Frontend/Backend -> Vercel Blob -> Database
 
 This service handles document uploads to Vercel Blob storage.
-Documents are stored in cloud storage (NOT in the database) to ensure:
-- Better performance and scalability
-- Proper database normalization (DB stores metadata, cloud stores files)
-- Efficient document delivery via CDN
-- Unlimited storage capacity
+Documents are stored in cloud storage (NOT in the database) to ensure
 
 The database stores only document URLs, not the files themselves.
 """

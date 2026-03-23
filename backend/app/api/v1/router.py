@@ -14,10 +14,6 @@ router.include_router(content.router, prefix="/content", tags=["Content"])
 router.include_router(courses.router, tags=["Courses"])
 router.include_router(student.router, prefix="/student", tags=["Student"])
 
-# Placeholder routes for future implementation
-# router.include_router(study.router, prefix="/study", tags=["Study"])
-# router.include_router(study_room.router, prefix="/study-rooms", tags=["Study Rooms"])
-# router.include_router(search.router, prefix="/search", tags=["Search"])
 
 
 @router.get("/health")

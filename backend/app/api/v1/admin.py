@@ -34,8 +34,7 @@ async def admin_login(credentials: AdminLoginRequest):
             detail="Invalid admin credentials"
         )
 
-    # For now, use plain text password comparison due to bcrypt issues
-    # TODO: Fix password hashing
+    # For now, use plain text password comparison due to bcrypt issues later do hashing
     if credentials.password != user['password']:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -59,7 +58,6 @@ async def admin_login(credentials: AdminLoginRequest):
 
 
 def verify_admin_token(current_user: UserResponse = Depends(get_current_user)):
-    """Dependency to verify admin token without database lookup."""
     # For hardcoded admin, just check the token subject
     if current_user.id == "admin" or current_user.role == UserRole.ADMIN:
         return current_user
@@ -79,10 +77,7 @@ async def get_all_users(
     offset: int = Query(0, ge=0),
     # admin removed
 ):
-    """
-    Get all users in the system.
-    Admin only endpoint.
-    """
+    # Get all users in the system. admin only
     users = user_repository.get_all_users(limit=limit, offset=offset)
     
     return {
@@ -98,10 +93,8 @@ async def toggle_user_status(
     user_id: UUID,
     # admin removed
 ):
-    """
-    Toggle user active/inactive status.
-    Admin only endpoint.
-    """
+
+    #Toggle user active/inactive status. admin only
     user = user_repository.get_by_id(user_id)
     
     if not user:
@@ -131,10 +124,8 @@ async def delete_book(
     book_id: UUID,
     # admin removed
 ):
-    """
-    Delete a book from the system.
-    Admin only endpoint.
-    """
+    
+    #Delete a book from the system.admin only
     book = book_repository.get_by_id(book_id)
     
     if not book:
@@ -162,10 +153,8 @@ async def toggle_book_publish_status(
     book_id: UUID,
     # admin removed
 ):
-    """
-    Toggle book publish status.
-    Admin only endpoint.
-    """
+    
+    #Toggle book publish status.admin only
     book = book_repository.get_by_id(book_id)
     
     if not book:
@@ -190,4 +179,3 @@ async def toggle_book_publish_status(
         )
 
 
-# End of admin routes

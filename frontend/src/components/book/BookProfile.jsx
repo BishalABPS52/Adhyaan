@@ -31,7 +31,7 @@ const BookProfile = ({ book }) => {
 
       const apiUrl =
         process.env.NEXT_PUBLIC_API_URL ||
-        "https://adhyaan.up.railway.app/api/v1";
+        "https://adhyaan.onrender.com/api/v1";
       const response = await fetch(`${apiUrl}/books/${book.id}/ratings`, {
         headers,
       });

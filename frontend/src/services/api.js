@@ -1,7 +1,7 @@
 // API Service - Backend Communication Layer
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://adhyaan.up.railway.app/api/v1";
+  process.env.NEXT_PUBLIC_API_URL || "https://adhyaan.onrender.com/api/v1";
 
 export const getApiBaseUrl = () => API_BASE_URL;
 

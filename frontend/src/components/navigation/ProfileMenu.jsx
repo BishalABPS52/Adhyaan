@@ -15,7 +15,7 @@ const ProfileMenu = ({ user, onLogout }) => {
       const token = localStorage.getItem("adhyaan_token");
       const apiUrl =
         process.env.NEXT_PUBLIC_API_URL ||
-        "https://adhyaan.up.railway.app/api/v1";
+        "https://adhyaan.onrender.com/api/v1";
       const response = await fetch(`${apiUrl}/users/switch-role`, {
         method: "POST",
         headers: {

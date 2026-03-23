@@ -22,7 +22,7 @@ export default function HomePage() {
   useEffect(() => {
     if (user) {
       if (role === "author") {
-        router.push("/dashboard");
+        router.push("/dashb");
       } else {
         router.push("/home");
       }

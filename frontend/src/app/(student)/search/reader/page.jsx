@@ -49,8 +49,6 @@ export default function ReaderSearchSection() {
     return () => clearTimeout(timer); // cancel if user types again within 400ms
   }, [searchQuery]);
 
-  // client-side filter using debouncedQuery — same logic as original
-  // but now only runs after 400ms pause instead of on every keystroke
   const filteredBooks = books.filter(book => {
     const title  = (book.book_name || book.title || '').toLowerCase();
     const author = (book.author_name || '').toLowerCase();

@@ -524,7 +524,7 @@ export default function StudentSection() {
   // Get API base URL from environment
   const getApiBaseUrl = () => {
     return (
-      process.env.NEXT_PUBLIC_API_URL || "https://adhyaan.up.railway.app/api/v1"
+      process.env.NEXT_PUBLIC_API_URL || "https://adhyaan.onrender.com/api/v1"
     );
   };
 

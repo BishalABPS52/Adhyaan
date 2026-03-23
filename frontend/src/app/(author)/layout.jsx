@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 
-// Author layout - allows all authenticated users to access author features
+// allows all authenticated users to access author features
 export default function AuthorLayout({ children }) {
   const { user, loading } = useAuth();
   const router = useRouter();

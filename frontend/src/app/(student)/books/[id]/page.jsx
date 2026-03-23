@@ -23,9 +23,9 @@ export default function BookPage() {
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
       const apiUrl =
         process.env.NEXT_PUBLIC_API_URL ||
-        "https://adhyaan.up.railway.app/api/v1";
+        "https://adhyaan.onrender.com/api/v1";
       const backendUrl =
-        process.env.NEXT_PUBLIC_BACKEND_URL || "https://adhyaan.up.railway.app";
+        process.env.NEXT_PUBLIC_BACKEND_URL || "https://adhyaan.onrender.com";
 
       const response = await fetch(`${apiUrl}/books/${bookId}`, {
         headers,
