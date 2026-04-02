@@ -91,8 +91,9 @@ const BookProfile = ({ book }) => {
         return;
       }
 
-      // const apiUrl = "https://adhyaan.up.railway.app/api/v1";
-      const apiUrl = "http://localhost:8000/api/v1";
+      const apiUrl =
+        process.env.NEXT_PUBLIC_API_URL ||
+        "https://adhyaan.onrender.com/api/v1";
       const response = await fetch(`${apiUrl}/books/${book.id}/ratings`, {
         method: "POST",
         headers: {

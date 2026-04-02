@@ -151,8 +151,9 @@ const QuestionsUploadForm = ({ isOpen, onClose, onSuccess }) => {
       }
 
       const token = localStorage.getItem("token");
-      // const apiUrl = "https://adhyaan.up.railway.app/api/v1";
-      const apiUrl = "http://localhost:8000/api/v1";
+      const apiUrl =
+        process.env.NEXT_PUBLIC_API_URL ||
+        "https://adhyaan.onrender.com/api/v1";
       const response = await fetch(`${apiUrl}/content/questions`, {
         method: "POST",
         headers: {

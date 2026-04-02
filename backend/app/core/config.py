@@ -8,9 +8,9 @@ class Settings(BaseSettings):
     
     # Application
     APP_NAME: str = "Adhyaan API"
-    APP_VERSION: str = "1.0.0"
-    DEBUG: bool = True
-    ENVIRONMENT: str = "development"
+    APP_VERSION: str = "1.1.0"
+    DEBUG: bool = False
+    ENVIRONMENT: str = "production"
     
     # Database
     DATABASE_HOST: str

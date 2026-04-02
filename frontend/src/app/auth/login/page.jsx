@@ -10,6 +10,8 @@ import Button from "@/components/ui/Button";
 import styles from "./page.module.css";
 
 export default function LoginPage() {
+  const apiBaseUrl =
+    process.env.NEXT_PUBLIC_API_URL || "https://adhyaan.onrender.com/api/v1";
   const router = useRouter();
   const { login, register } = useAuth();
   const { switchRole } = useRole();
@@ -33,7 +35,7 @@ export default function LoginPage() {
   const sendVerificationCode = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/send-verification`,
+        `${apiBaseUrl}/auth/send-verification`,
         {
           method: "POST",
           headers: {
@@ -61,7 +63,7 @@ export default function LoginPage() {
   const verifyCode = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/verify-code`,
+        `${apiBaseUrl}/auth/verify-code`,
         {
           method: "POST",
           headers: {
@@ -92,7 +94,7 @@ export default function LoginPage() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/resend-verification`,
+        `${apiBaseUrl}/auth/resend-verification`,
         {
           method: "POST",
           headers: {
@@ -173,7 +175,7 @@ export default function LoginPage() {
           // Check if email already exists
           try {
             const checkResponse = await fetch(
-              `${process.env.NEXT_PUBLIC_API_URL}/auth/check-email`,
+              `${apiBaseUrl}/auth/check-email`,
               {
                 method: "POST",
                 headers: {

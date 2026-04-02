@@ -8,6 +8,8 @@ import Button from '@/components/ui/Button';
 import styles from './page.module.css';
 
 export default function ResetPasswordPage() {
+  const apiBaseUrl =
+    process.env.NEXT_PUBLIC_API_URL || "https://adhyaan.onrender.com/api/v1";
   const router = useRouter();
   const [step, setStep] = useState(1); // 1: email, 2: code, 3: new password
   const [formData, setFormData] = useState({
@@ -55,7 +57,7 @@ export default function ResetPasswordPage() {
     setMessage('');
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/forgot-password`, {
+      const response = await fetch(`${apiBaseUrl}/auth/forgot-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +88,7 @@ export default function ResetPasswordPage() {
     setMessage('');
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/verify-reset-code`, {
+      const response = await fetch(`${apiBaseUrl}/auth/verify-reset-code`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -130,7 +132,7 @@ export default function ResetPasswordPage() {
     }
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/reset-password`, {
+      const response = await fetch(`${apiBaseUrl}/auth/reset-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
