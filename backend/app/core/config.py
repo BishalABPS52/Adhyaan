@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440
     
     # CORS
-    ALLOWED_ORIGINS: str = "http://localhost:3000,http://127.0.0.1:3000,https://adhyaan.vercel.app,https://adhyaan.bishalshrestha52.com.np"
+    ALLOWED_ORIGINS: str = "http://localhost:3000,https://adhyaan.vercel.app,https://adhyaan.bishalshrestha52.com.np"
     
     # Server
     HOST: str = "0.0.0.0"
