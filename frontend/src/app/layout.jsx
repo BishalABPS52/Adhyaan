@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import { AuthProvider } from '@/hooks/useAuth';
 import { RoleProvider } from '@/hooks/useRole';
 import { ThemeProvider } from '@/hooks/useTheme';
+import GoogleTagManager from '@/components/GoogleTagManager';
 import Navbar from '@/components/navigation/Navbar';
 import Footer from '@/components/footer/Footer';
 import '@/styles/globals.css';
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
         <meta name="description" content="Your Digital Learning Companion – Study, Read, and Grow" />
       </head>
       <body>
+        <GoogleTagManager />
         <ThemeProvider>
           <AuthProvider>
             <RoleProvider>
